@@ -16,7 +16,7 @@ export const App = () => {
                     <Route path="/login" element={<Login />} />
                     {/* Se especifica que roles tienen acceso */}
 
-                    <Route element={<ProtectedRoutes allowedRoles={["ROLE_USER"]} />}>
+                    <Route element={<ProtectedRoutes allowedRoles={["ROLE_USER","ROLE_ADMIN"]} />}>
                         <Route path="/inicio" element={<Home />} />
                         <Route path="/prueba" element={<ArchivoPrueba/>} />
                     </Route>
