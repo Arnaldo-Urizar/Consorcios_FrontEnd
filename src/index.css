@@ -1,0 +1,22 @@
+:root {
+  --primary-color: #2196f3;
+  --secundary-color: #feba0b;
+  --footer-color: #eff3f5;
+  --footer-color2: #7a7a7a;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  padding: 0;
+  /* font-family: 'Poppins', Arial, Helvetica, sans-serif; */
+  font-family: 'Poppins', sans-serif;
+
+}
+body {
+  overflow-x: hidden;
+}
