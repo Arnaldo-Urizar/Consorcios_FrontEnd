@@ -81,6 +81,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       const user = localStorage.getItem('token');
         if (user) {
           const userData = JSON.parse(user);
+          //revisar si la carga que recibe en handleuser es correcta o hay que especificar el token
           dispatch({ type: '[User] LoginAccess', payload: userData });
         }
       }, []);

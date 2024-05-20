@@ -22,5 +22,6 @@ export const userFetch = async(userFront: UserFront)=>{
         }
     }catch(e){
         console.error("No se pudo realizar el fetch" + e);
+        return null;
     }
 }

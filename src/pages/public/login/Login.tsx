@@ -1,6 +1,8 @@
 import Wave from "../../../components/wave/Wave";
 import "./login.css"
 
+import styles from "./login.module.css";
+
 import { useContext, useState } from "react";
 import { userFetch } from "../../../service/auth";
 import { useNavigate } from "react-router-dom";
@@ -53,6 +55,34 @@ const Login: React.FC = () => {
         <>
             <Wave pos1="absolute" pos2="absolute" pos3="absolute" />
             <section className="login-container">
+
+            <div className={styles.card}>
+                <div className={styles.card__details}>
+                    <h1>
+                        Consorcio Vecinal de Agua Potable <br /> "Santa Maria de Oro"
+                    </h1>
+                    <p>
+                        El "Consorcio Vecinal de Agua Potable Santa Maria de Oro" brinda
+                        a sus clientes la posibilidad de acceder a sus cuentas de forma
+                        remota, a través de un sistema de autenticación. <br /> <br />{" "}
+                        <strong>
+                            Para acceder a su cuenta, el cliente debe introducir su correo electrónico
+                            y contraseña en el campo correspondiente.
+                        </strong>{" "}
+                        <br /> <br /> Una vez que se han verificado correctamente los datos,
+                        el usuario podrá acceder a su perfil personal
+                        y obtener información relevante sobre su consumo de agua
+                        potable, así como también realizar diversos trámites y gestiones
+                        relacionados con su servicio de agua potable.
+                    </p>
+                </div>
+                {/* <Link to={"/info"} className={styles.card__link}>
+                    {" "}
+                    Mas info
+                </Link> */}
+            </div>
+
+
                 <div className="wrapper">
                     <form action="" onSubmit={handleSubmit}>
                         <h1>Bienvenido</h1>
