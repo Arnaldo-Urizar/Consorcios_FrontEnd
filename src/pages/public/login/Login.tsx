@@ -1,26 +1,34 @@
 import Wave from "../../../components/wave/Wave";
 import "./login.css"
-
 import styles from "./login.module.css";
 
 import { useContext, useState } from "react";
 import { userFetch } from "../../../service/auth";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../service/AuthContext";
+import JwtDto from "../../../models/JwtDto";
 
 
 const Login: React.FC = () => {
     
     //Trae funcion login de AuthContext
     const {logIn} = useContext(AuthContext);
-
     const navigate = useNavigate()
 
     //Datos ingresados por el usuario
-    const [user, setUser] = useState("")
-    const [pass, setPass] = useState("")
-    const [rememberPass , setRememberPass] = useState(false)
-    // console.log(user), console.log(pass), console.log(rememberPass);
+    const [user, setUser] = useState("");
+    const [pass, setPass] = useState("");
+    const [rememberPass , setRememberPass] = useState(false);
+
+
+    // Verificar que el token tenga una estructura válida
+    const isValidToken =(resultFetch: JwtDto)=>{
+        const tokenParts = resultFetch.token.split(".");
+        if(tokenParts.length === 3){
+            return true;
+        }
+        return false;
+    }    
 
     // handleSubmit: Se activa cuando el usuario inicia sesion
     const handleSubmit = async(event: React.FormEvent)=>{
@@ -35,19 +43,15 @@ const Login: React.FC = () => {
             // Envia datos al servidor
             const userData = await userFetch(formData);
             console.log(userData)
-
-            //Verifica que esté logeado y que el token no esté vacio
-            if (userData.isLogin && userData.token.length != 0 ) {
-                //Llama a la funcion login y navega para activar "ProtectedRoutes";
+            if(isValidToken(userData)){
                 logIn(userData);
-                navigate("/inicio");
+                navigate("/inicio");  
+
             }else{
                 alert("No se pudo iniciar sesion, revisa los datos")
-                console.log("no se pudo ingresar: " + userData), console.log(userData);
             }
         }catch(e){
-            alert("Error verficar los datos")
-            console.log("Error al m anejar el Login: " + e);
+            alert("No se pudo obtener una respuesta")
         }
     }
     //Estructura Login

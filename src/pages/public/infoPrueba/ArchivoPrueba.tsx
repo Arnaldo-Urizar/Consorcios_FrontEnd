@@ -5,6 +5,7 @@ import { AuthContext } from "../../../service/AuthContext";
 export const ArchivoPrueba = () => {
   //Trae funcion para cerrar sesión
   const {logOut}= useContext(AuthContext)
+  
   return (
     <div>
         <h1>pagina : ArchivoPrueba</h1>

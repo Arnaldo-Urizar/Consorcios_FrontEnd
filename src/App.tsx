@@ -13,7 +13,7 @@ export const App = () => {
         <AuthProvider>
             <BrowserRouter>
                 <Routes>
-                    <Route path="/login" element={<Login />} />
+                    <Route path="/" element={<Login />} />
                     {/* Se especifica que roles tienen acceso */}
 
                     <Route element={<ProtectedRoutes allowedRoles={["ROLE_USER","ROLE_ADMIN"]} />}>

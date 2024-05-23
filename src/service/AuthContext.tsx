@@ -6,8 +6,12 @@ interface AuthContextType {
   userState: {
     isLogin: boolean;
     token: string;
-    authorities: string[];
-  };
+    name: {
+      firstName: string;
+      lastName: string;
+    }
+    role: string;
+  },
   logIn: (user: JwtDto) => void;
   logOut: () => void;
 }
@@ -17,9 +21,12 @@ const defaultValue: AuthContextType = {
   userState: {
     isLogin: false,
     token: "",
-    authorities: []
+    name: {
+      firstName: "",
+      lastName: ""
+    },
+    role: ""
   },
-
   logIn: () => {},
   logOut: () => {}
 };

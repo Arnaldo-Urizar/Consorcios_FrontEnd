@@ -11,11 +11,14 @@ export const ProtectedRoutes = ({allowedRoles}: ProtectedRoutesProps) => {
     
     //Obtiene el estado actual del usuario
     const {userState} = useContext(AuthContext);
-    const {isLogin , authorities} = userState;
+    const {isLogin , role} = userState;
 
     //Recibe roles definidos en "App.tsx" y compara con rol del estado actual.
-    if (!isLogin || !authorities.some(role => allowedRoles.includes(role))) {
-        return <Navigate to="/" replace />;//Navega al inicio
+    if (!isLogin || !allowedRoles.includes(role)) {
+        if(role === "NO_ROLE"){
+            return <Navigate to="/" replace />; //Navega cuanado cierra sesion
+        }
+        return <Navigate to="/inicio" replace />;//Navega al inicio
     }
     //Si coincide los roles, renderiza las paginas indicadas en App.tsx
     return <Outlet />;
