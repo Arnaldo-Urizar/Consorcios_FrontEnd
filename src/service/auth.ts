@@ -12,9 +12,7 @@ export const userFetch = async(userFront: UserFront)=>{
         })
 
         if(response.ok){
-            console.log("Fetch exitoso:"), 
-            console.log(response)
-            
+            console.log("Fetch exitoso.")         
             return await response.json()
         }else{
             console.log("Fetch falló");

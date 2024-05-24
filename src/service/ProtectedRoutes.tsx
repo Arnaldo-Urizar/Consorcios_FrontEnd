@@ -7,7 +7,6 @@ interface ProtectedRoutesProps {
   }
 
 export const ProtectedRoutes = ({allowedRoles}: ProtectedRoutesProps) => {
-    console.log("Tipo de rol recibido: " + allowedRoles);
     
     //Obtiene el estado actual del usuario
     const {userState} = useContext(AuthContext);

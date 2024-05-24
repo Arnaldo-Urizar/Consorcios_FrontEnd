@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../service/AuthContext";
 import JwtDto from "../../../models/JwtDto";
 
-
+import { Link } from "react-router-dom";
 const Login: React.FC = () => {
     
     //Trae funcion login de AuthContext
@@ -42,7 +42,7 @@ const Login: React.FC = () => {
         try{
             // Envia datos al servidor
             const userData = await userFetch(formData);
-            console.log(userData)
+
             if(isValidToken(userData)){
                 logIn(userData);
                 navigate("/inicio");  
@@ -80,10 +80,10 @@ const Login: React.FC = () => {
                         relacionados con su servicio de agua potable.
                     </p>
                 </div>
-                {/* <Link to={"/info"} className={styles.card__link}>
+                <Link to={"/info"} className={styles.card__link}>
                     {" "}
                     Mas info
-                </Link> */}
+                </Link>
             </div>
 
 

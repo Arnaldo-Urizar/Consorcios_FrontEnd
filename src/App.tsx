@@ -1,31 +1,39 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ProtectedRoutes } from "./service/ProtectedRoutes";
 import AuthProvider from "./service/AuthProvider";
+import { useContext } from "react";
+import { AuthContext } from "./service/AuthContext";
 
+// Componentes
 import Login from "./pages/public/login/Login";
-import { Info } from "./pages/public/infoPrueba/Info";
-import { ArchivoPrueba } from "./pages/public/infoPrueba/ArchivoPrueba";
-import Home from "./pages/public/infoPrueba/home";
+import Home from "./pages/private/home/Home";
+import Navbar from "./components/navbar/Navbar";
 
 export const App = () => {
-
-    return (
+    return(
         <AuthProvider>
-            <BrowserRouter>
-                <Routes>
-                    <Route path="/" element={<Login />} />
-                    {/* Se especifica que roles tienen acceso */}
-
-                    <Route element={<ProtectedRoutes allowedRoles={["ROLE_USER","ROLE_ADMIN"]} />}>
-                        <Route path="/inicio" element={<Home />} />
-                        <Route path="/prueba" element={<ArchivoPrueba/>} />
-                    </Route>
-                    
-                    <Route element={<ProtectedRoutes allowedRoles={["ROLE_ADMIN"]} />}> 
-                        <Route path="/info" element={<Info />} />
-                    </Route>
-                </Routes>
-            </BrowserRouter>
+            <AppContent />
         </AuthProvider>
+    )
+
+}
+const AppContent = () => {
+
+    const {userState} = useContext(AuthContext)
+    return (
+        <BrowserRouter>
+            {userState.isLogin && <Navbar/>}
+            <Routes>
+                <Route path="/" element={<Login />} />
+                {/* Se especifica que roles tienen acceso */}
+                <Route element={<ProtectedRoutes allowedRoles={["ROLE_USER","ROLE_ADMIN"]} />}>
+                    <Route path="/inicio" element={<Home />} />
+                </Route>
+                    
+                <Route element={<ProtectedRoutes allowedRoles={["ROLE_ADMIN"]} />}> 
+                    {/* {Colocar rutas privadas} */}
+                </Route>
+            </Routes>
+        </BrowserRouter>
     )
 }

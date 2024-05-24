@@ -6,7 +6,7 @@ interface Seo {
   name: string;
   type: string;
 }
-function SEO({ title, description, name, type }: Seo) {
+export const SEO = ({ title, description, name, type }: Seo) =>{
   return (
     <Helmet>
       {/* Standard metadata tags */}
@@ -27,5 +27,3 @@ function SEO({ title, description, name, type }: Seo) {
     </Helmet>
   );
 }
-
-export default SEO;
