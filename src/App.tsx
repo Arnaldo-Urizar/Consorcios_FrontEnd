@@ -9,6 +9,9 @@ import Login from "./pages/public/login/Login";
 import Home from "./pages/private/home/Home";
 import Navbar from "./components/navbar/Navbar";
 
+import ChangeCode from "./pages/public/login/ChangeCode/ChangeCode";
+import Passwordrecovery from "./pages/public/login/Passwordrecovery";
+
 export const App = () => {
     return(
         <AuthProvider>
@@ -25,6 +28,9 @@ const AppContent = () => {
             {userState.isLogin && <Navbar/>}
             <Routes>
                 <Route path="/" element={<Login />} />
+                <Route path="/changeCode" element={<ChangeCode />} />
+                <Route path="/passwordrecovery" element={<Passwordrecovery />} />
+
                 {/* Se especifica que roles tienen acceso */}
                 <Route element={<ProtectedRoutes allowedRoles={["ROLE_USER","ROLE_ADMIN"]} />}>
                     <Route path="/inicio" element={<Home />} />

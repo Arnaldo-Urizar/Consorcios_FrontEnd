@@ -66,23 +66,22 @@ const Login: React.FC = () => {
                         Consorcio Vecinal de Agua Potable <br /> "Santa Maria de Oro"
                     </h1>
                     <p>
-                        El "Consorcio Vecinal de Agua Potable Santa Maria de Oro" brinda
-                        a sus clientes la posibilidad de acceder a sus cuentas de forma
-                        remota, a través de un sistema de autenticación. <br /> <br />{" "}
+                        El "Consorcio Vecinal de Agua Potable Santa María de Oro" ofrece
+                        a sus usuarios acceso remoto a sus cuentas mediante un sistema de autenticación. 
+                        <br /> <br />{" "}
                         <strong>
-                            Para acceder a su cuenta, el cliente debe introducir su correo electrónico
-                            y contraseña en el campo correspondiente.
+                            Para ingresar, debe introducir
+                            su correo electrónico y contraseña. 
                         </strong>{" "}
-                        <br /> <br /> Una vez que se han verificado correctamente los datos,
-                        el usuario podrá acceder a su perfil personal
-                        y obtener información relevante sobre su consumo de agua
-                        potable, así como también realizar diversos trámites y gestiones
-                        relacionados con su servicio de agua potable.
+                        <br /> <br /> 
+                        Tras la verificación de los datos, podrá acceder a su perfil personal,
+                        donde encontrará información sobre su consumo de agua y
+                        podrá realizar trámites y gestiones relacionados con el servicio.
                     </p>
                 </div>
                 <Link to={"/info"} className={styles.card__link}>
                     {" "}
-                    Mas info
+                    Más información
                 </Link>
             </div>
 
@@ -95,7 +94,7 @@ const Login: React.FC = () => {
                         <div className="input-box">
                             <input 
                                 type="text" 
-                                placeholder="DNI/CUIT" 
+                                placeholder="Nombre de Usuario" 
                                 onChange={(e)=>setUser(e.target.value)}
                                 required
                             />
@@ -105,7 +104,7 @@ const Login: React.FC = () => {
                         <div className="input-box">
                             <input 
                                 type="password" 
-                                placeholder="Código" 
+                                placeholder="Contraseña" 
                                 onChange={(e)=>setPass(e.target.value)}
                                 required
                             />
@@ -119,7 +118,7 @@ const Login: React.FC = () => {
                                 type="checkbox"
                             />Recordar
                             </label>
-                            <a href="#">¿Olvidaste el Código?</a>
+                            <Link to="/Passwordrecovery">¿Olvidaste la contraseña?</Link>
                         </div>
 
                         <button type="submit" className="btn">Iniciar</button>
