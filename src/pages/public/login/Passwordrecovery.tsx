@@ -25,33 +25,18 @@ const Passwordrecovery: React.FC = () => {
             // AGREGAR CARGANDO...
             if(response.ok){
                 const data = await response.json();
-                console.log("se recibió del fetch: ", data.message)
                 if(data.message ===  "Correo electrónico de restablecimiento de contraseña enviado"){
                     setShowConfirmation(true)
                 }else{
-                    console.log("No se pudo confirmar el correo")
                     return null;
                 }
             }else{
-                console.log("no se pudo obtener los datos del sevidor")
                 return null;
             }
         }catch(e){
-            console.error("No se pudo obtener los datos del servidor" + e);
             return null;
         }
     }
-        // Aca se tendria que implementar la lógica para enviar un correo electrónico de recuperación de contraseña
-
-        /* fetch para enviar correo al back */ 
-        // devuelve un mensaje
-        // 
-        // cerrar vista olvide mi contraeña(ingrse correro) --> devuelve --> "message": "Correo electrónico de restablecimiento de contraseña enviado"
-
-        // revisa gmail --> changeCode/token
-        
-        // capturar token y nueva contraseña
-
     return (
         <>
             <Wave pos1="absolute" pos2="absolute" pos3="absolute" />

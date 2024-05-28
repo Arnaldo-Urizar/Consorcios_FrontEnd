@@ -5,8 +5,6 @@ import styles from "./changeCode.module.css";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate} from "react-router-dom";
 
-
-
 const ChangeCode: React.FC = () => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -20,7 +18,6 @@ const ChangeCode: React.FC = () => {
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
         const param = searchParams.get('token');
-        console.log("parametro:" , param)
         if (param) {
             setTokenRestorePass(param);
         }
@@ -36,9 +33,7 @@ const ChangeCode: React.FC = () => {
                 token: tokenRestorePass,
                 newPassword: newCode
             }   
-            console.log(formData)
-            console.log(formData.token, formData.newPassword)
-         
+
             try{
                 const response = await fetch("http://localhost:8080/auth/reset",{  
                     method: "POST",
@@ -48,19 +43,13 @@ const ChangeCode: React.FC = () => {
     
                 if(response.ok){
                     const data = await response.json();
-                    console.log("datos de repsonse ChangeCode",data)
                     setCodeChanged(true);
-                    navigate("/")
+                    navigate("/");
                 }else{
-                    console.log("respuesta fallida")
-                    console.log(response)
-
                     return null;
                 }
                 
             }catch(e){
-                console.error("No se pudo obtener los datos del servidor: " + e);
-                console.log(e)
                 return null;
             }
         }
