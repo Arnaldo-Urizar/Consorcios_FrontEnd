@@ -53,7 +53,7 @@ const Navbar = () => {
                       to={"/homepage"}
                       style={({ isActive }) => (isActive ? { opacity: 1 } : {})}
                     >
-                      Modo Administrador <MdAdminPanelSettings />
+                      <MdAdminPanelSettings /> Modo Administrador 
                     </NavLink>
                   ) : (
                     <NavLink

@@ -1,5 +1,6 @@
 .cover {
   z-index: -10;
+  overflow: hidden;
 }
 .bg_color {
   width: 100%;
@@ -8,12 +9,12 @@
   position: absolute;
   top: 0;
   z-index: -10;
+  
 }
 
 .wave {
-  /* width: 100vw; */
   width: 6000px;
-  /* width: 100%; */
+  /* width: 400%; */
   height: 100%;
   position: absolute;
   top: 8%;
@@ -64,7 +65,7 @@
   }
 }
 
-@media (width: 1366px) {
+@media (max-width: 1366px) {
   .bg_color {
     height: 56%;
   }
