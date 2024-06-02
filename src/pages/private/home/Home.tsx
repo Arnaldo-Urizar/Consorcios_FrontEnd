@@ -6,7 +6,7 @@ import {
   HiMiniChatBubbleLeftEllipsis,
 } from "react-icons/hi2";
 import { motion } from "framer-motion";
-import { SEO } from "../../../components/SEO";
+import { SEO } from "../../../components/seo/SEO";
 import Wave from "../../../components/wave/Wave";
 import styles from "./home.module.css"
 

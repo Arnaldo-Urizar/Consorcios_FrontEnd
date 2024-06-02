@@ -9,8 +9,8 @@ import Login from "./pages/public/login/Login";
 import Home from "./pages/private/home/Home";
 import Navbar from "./components/navbar/Navbar";
 
-import ChangeCode from "./pages/public/login/ChangeCode/ChangeCode";
-import Passwordrecovery from "./pages/public/login/Passwordrecovery";
+import ChangeCode from "./pages/public/changeCode/ChangeCode";
+import Passwordrecovery from "./pages/public/passwordRecovery/Passwordrecovery";
 
 export const App = () => {
     return(

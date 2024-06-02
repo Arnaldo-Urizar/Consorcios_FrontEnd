@@ -15,7 +15,6 @@ const initialState = {
        lastName: ""
     },
     role: ""
-    // role: [] as string[]
 };
   
   //carga estado inicial del usuario autenticado desde localStorage cuando la aplicación se inicia o se recarga
@@ -42,7 +41,6 @@ const initialState = {
 
       case '[User] LoginAccess':{
         const decodeResult = decodePayload();
-        console.log(decodeResult);
         return {
           //Modifica el estado inicial con los datos de inicio de sesion
           ...state,
