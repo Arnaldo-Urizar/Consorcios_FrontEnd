@@ -43,7 +43,9 @@ const Passwordrecovery: React.FC = () => {
                     setShowAlert(true)
                 }
             }else{
+                
                 throw new Error(`Error response fetch: ${response.status}`);
+                
             }
         }catch(e){
             setShowAlertServer(true)
