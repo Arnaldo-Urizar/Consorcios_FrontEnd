@@ -1,6 +1,11 @@
-.change-code-container {
+.change_code_container {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 90vh;
+    gap: 20px;
 }
+.form{
+    height: 100%;
+}
+

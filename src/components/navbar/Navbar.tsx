@@ -17,8 +17,7 @@ const Navbar = () => {
 
     const [menuOpen, setMenuOpen] = useState(false);
 
-    const {userState} = useContext(AuthContext);
-    const {logOut}= useContext(AuthContext)
+    const {userState, logOut} = useContext(AuthContext);
 
     const toggleMenu = () => {
         setMenuOpen(!menuOpen);
