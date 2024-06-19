@@ -12,6 +12,7 @@ import ChangeCode from "./pages/public/changeCode/ChangeCode";
 import Passwordrecovery from "./pages/public/passwordRecovery/Passwordrecovery";
 import Info from "./pages/public/Info";
 import TryComp from "./pages/public/try";
+import FaqPage from "./pages/public/faq/faq";
 
 export const App = () => {
   return (
@@ -30,6 +31,7 @@ const AppContent = () => {
         <Route path="/changeCode" element={<ChangeCode />} />
         <Route path="/passwordrecovery" element={<Passwordrecovery />} />
         <Route path="/try" element={<TryComp />} />
+        <Route path="/faq" element={<FaqPage />} />
 
         {/* Se especifica que roles tienen acceso */}
         <Route
