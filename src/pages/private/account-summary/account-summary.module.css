@@ -1,0 +1,119 @@
+.account {
+    background: hsl(36, 100%, 99%);
+    width: 100%;
+    max-width: 90rem;
+    margin: 3.5rem auto;
+    height: 50rem;
+    display: grid;
+    gap: 1.5vw;
+    padding: 1vw;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: auto;
+    grid-template-areas:
+        "hero hero  hero aside2 aside2 aside2"
+        "hero hero hero aside2 aside2 aside2"
+        "aside3 aside3 aside4 aside4 aside6 aside6"
+        "aside3 aside3 aside5 aside5 aside6 aside6"
+        "aside3 aside3 aside5 aside5 aside6 aside6 ";
+
+    .guardia {
+        grid-area: hero;
+
+        p {
+            font-size: clamp(0.8rem, 1.7rem, 2rem);
+            color: rgba(255, 18, 18, 0.932);
+            font-weight: 900;
+            text-transform: uppercase;
+
+        }
+    }
+
+    & div:nth-child(2) {
+        grid-area: aside2;
+    }
+
+    & div:nth-child(3) {
+        grid-area: aside3;
+    }
+
+    & div:nth-child(4) {
+        grid-area: aside4;
+    }
+
+    & div:nth-child(5) {
+        grid-area: aside5;
+    }
+
+    & div:nth-child(6) {
+        grid-area: aside6;
+    }
+
+
+}
+
+.card {
+    display: flex;
+    color: white;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    background-color: var(--primary-color);
+    cursor: pointer;
+
+    h3,
+    h4 {
+        font-size: clamp(1rem, 1.5rem, 2rem);
+        font-weight: 900;
+        text-transform: uppercase;
+    }
+
+    p {
+        font-size: clamp(0.5rem, 1.2rem, 1.5rem);
+        font-weight: 500;
+    }
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+    .account {
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-areas:
+            "hero hero hero hero"
+            "hero hero hero hero"
+            "aside2 aside2 aside2 aside2"
+            "aside3 aside3 aside4 aside4"
+            "aside3 aside3 aside5 aside5"
+            "aside6 aside6 aside6 aside6";
+    }
+}
+
+@media (max-width: 768px) {
+    .account {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-areas:
+            "hero hero"
+            "hero hero"
+            "aside2 aside2"
+            "aside3 aside3"
+            "aside4 aside4"
+            "aside5 aside5"
+            "aside6 aside6";
+    }
+}
+
+@media (max-width: 480px) {
+    .account {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "hero"
+            "hero"
+            "aside2"
+            "aside3"
+            "aside4"
+            "aside5"
+            "aside6";
+    }
+}

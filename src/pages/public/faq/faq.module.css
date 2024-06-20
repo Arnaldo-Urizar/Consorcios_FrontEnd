@@ -1,3 +1,7 @@
+.accordion_container {
+    margin: 5rem 0;
+}
+
 .accordion {
     width: 100%;
     max-width: 600px;
