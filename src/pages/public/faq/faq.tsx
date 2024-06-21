@@ -1,4 +1,5 @@
 import Cover from "../../../components/cover/cover";
+import Footer from "../../../components/footer/Footer";
 import Navbar from "../../../components/navbar/Navbar";
 import Wave from "../../../components/wave/Wave";
 import styles from "./faq.module.css";
@@ -27,6 +28,7 @@ const FaqPage = () => {
           </div>
         ))}
       </div>
+      <Footer />
     </>
   );
 };
