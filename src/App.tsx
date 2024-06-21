@@ -10,7 +10,7 @@ import Home from "./pages/private/home/Home";
 import Navbar from "./components/navbar/Navbar";
 import ChangeCode from "./pages/public/changeCode/ChangeCode";
 import Passwordrecovery from "./pages/public/passwordRecovery/Passwordrecovery";
-import Info from "./pages/public/Info";
+import Info from "./pages/public/info/Info";
 import FaqPage from "./pages/public/faq/faq";
 import AccountSummary from "./pages/private/account-summary/account-summary";
 
@@ -32,6 +32,7 @@ const AppContent = () => {
         <Route path="/passwordrecovery" element={<Passwordrecovery />} />
         <Route path="/faq" element={<FaqPage />} />
         <Route path="/account" element={<AccountSummary />} />
+        <Route path="/info" element={<Info />} />
 
         {/* Se especifica que roles tienen acceso */}
         <Route

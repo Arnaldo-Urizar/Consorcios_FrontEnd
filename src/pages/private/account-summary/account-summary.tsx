@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import Cover from "../../../components/cover/cover";
 import Navbar from "../../../components/navbar/Navbar";
 import Wave from "../../../components/wave/Wave";
 import styles from "./account-summary.module.css";
 import Footer from "../../../components/footer/Footer";
+import { SEO } from "../../../components/seo/SEO";
 
 const AccountSummary = () => {
   useEffect(() => {
@@ -32,6 +33,12 @@ const AccountSummary = () => {
 
   return (
     <>
+      <SEO
+        title="Resumen de cuenta | Consorcio de Agua Santa Maria de Oro"
+        description="la pagina de Resumen de cuenta del consorcio de agua Santa Maria de Oro"
+        name="Consorcio de Agua Santa Maria De Oro"
+        type="article"
+      />
       <Wave pos1="absolute" pos2="absolute" pos3="absolute" />
       <Navbar />
       <Cover

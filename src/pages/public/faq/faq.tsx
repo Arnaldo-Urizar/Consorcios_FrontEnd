@@ -1,12 +1,19 @@
 import Cover from "../../../components/cover/cover";
 import Footer from "../../../components/footer/Footer";
 import Navbar from "../../../components/navbar/Navbar";
+import { SEO } from "../../../components/seo/SEO";
 import Wave from "../../../components/wave/Wave";
 import styles from "./faq.module.css";
 
 const FaqPage = () => {
   return (
     <>
+      <SEO
+        title="Preguntas y Respuestas | Consorcio de Agua Santa Maria de Oro"
+        description="la pagina de preguntas y respuestas del consorcio de agua Santa Maria de Oro"
+        name="Consorcio de Agua Santa Maria De Oro"
+        type="FAQ"
+      />
       <Wave pos1="absolute" pos2="absolute" pos3="absolute" />
       <Navbar />
       <Cover
