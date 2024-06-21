@@ -18,6 +18,7 @@
 
     .guardia {
         grid-area: hero;
+        height: 13rem;
 
         p {
             font-size: clamp(0.8rem, 1.7rem, 2rem);
@@ -30,6 +31,8 @@
 
     & div:nth-child(2) {
         grid-area: aside2;
+        height: 13rem;
+
     }
 
     & div:nth-child(3) {
@@ -113,6 +116,7 @@
 
 @media (max-width: 768px) {
     .account {
+        margin-bottom: 27rem;
         grid-template-columns: repeat(2, 1fr);
         grid-template-areas:
             "hero hero"

@@ -5,6 +5,17 @@ import Wave from "../../../components/wave/Wave";
 import styles from "./account-summary.module.css";
 import Footer from "../../../components/footer/Footer";
 import { SEO } from "../../../components/seo/SEO";
+import {
+  BarChart,
+  Bar,
+  Rectangle,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 
 const AccountSummary = () => {
   useEffect(() => {
@@ -30,6 +41,51 @@ const AccountSummary = () => {
       }
     };
   }, []);
+
+  const data = [
+    {
+      name: "Page A",
+      uv: 4000,
+      pv: 2400,
+      amt: 2400,
+    },
+    {
+      name: "Page B",
+      uv: 3000,
+      pv: 1398,
+      amt: 2210,
+    },
+    {
+      name: "Page C",
+      uv: 2000,
+      pv: 9800,
+      amt: 2290,
+    },
+    {
+      name: "Page D",
+      uv: 2780,
+      pv: 3908,
+      amt: 2000,
+    },
+    {
+      name: "Page E",
+      uv: 1890,
+      pv: 4800,
+      amt: 2181,
+    },
+    {
+      name: "Page F",
+      uv: 2390,
+      pv: 3800,
+      amt: 2500,
+    },
+    {
+      name: "Page G",
+      uv: 3490,
+      pv: 4300,
+      amt: 2100,
+    },
+  ];
 
   return (
     <>
@@ -69,6 +125,35 @@ const AccountSummary = () => {
             <p>Tarifa: Tarifa A</p>
             <p>Fecha de Lectura del Medidor: 28/09/2023</p>
           </div>
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart
+              width={150}
+              height={50}
+              data={data}
+              margin={{
+                top: 40,
+                right: 10,
+                left: 10,
+                bottom: 25,
+              }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" stroke="#fff" />
+              <YAxis stroke="#fff" />
+              <Tooltip />
+              <Legend />
+              <Bar
+                dataKey="pv"
+                fill="#fff"
+                activeBar={<Rectangle fill="red" stroke="white" />}
+              />
+              <Bar
+                dataKey="uv"
+                fill="#2b2d42"
+                activeBar={<Rectangle fill="red" stroke="white" />}
+              />
+            </BarChart>
+          </ResponsiveContainer>
           <h4>CONSUMO DE AGUA</h4>
         </div>
         <div className={styles.card}>
