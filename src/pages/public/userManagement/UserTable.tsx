@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Wave from "../../../components/wave/Wave";
 import './UserTable.css';
+import Navbar from "../../../components/navbar/Navbar";
 
 const initialUsers = [
   { id: 1, name: 'Juan Pérez', email: 'juan.perez@example.com', status: 'Activo' },
@@ -30,6 +31,7 @@ function UserTable() {
   return (
     <>
       <Wave pos1="absolute" pos2="absolute" pos3="absolute" />
+      <Navbar />
       <section className="user-table-section">
         <div className="user-table-container">
           <button className="add-button">Agregar Usuario</button>
