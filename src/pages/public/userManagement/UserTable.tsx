@@ -4,8 +4,8 @@ import './UserTable.css';
 import Navbar from "../../../components/navbar/Navbar";
 
 const initialUsers = [
-  { id: 1, name: 'Juan Pérez', email: 'juan.perez@example.com', status: 'Activo' },
-  { id: 2, name: 'Ana Gómez', email: 'ana.gomez@example.com', status: 'Activo' },
+  { id: 1, name: 'Juan Pérez', email: 'juan.perez@gmail.com', status: 'Activo' },
+  { id: 2, name: 'Ana Gómez', email: 'ana.gomez@gmail.com', status: 'Activo' },
 ];
 
 function UserTable() {
