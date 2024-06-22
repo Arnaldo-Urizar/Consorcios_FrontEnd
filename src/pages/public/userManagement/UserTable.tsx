@@ -147,7 +147,7 @@ function UserTable() {
               <h2>Agregar Usuario</h2>
               <form onSubmit={handleSubmitAddUser}>
                 <label>
-                  Primer Nombre:
+                  Nombre:
                   <input type="text" name="firstName" required />
                 </label>
                 <label>
