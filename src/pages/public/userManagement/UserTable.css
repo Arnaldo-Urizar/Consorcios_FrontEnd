@@ -8,10 +8,8 @@
 }
 
 .user-table-container {
-  position: relative;
-  max-width: 900px;
+  max-width: 1500px;
   margin: 0 auto;
-  z-index: 1;
   background: white;
   padding: 30px;
   border-radius: 15px;
@@ -35,8 +33,6 @@
 }
 
 .table-wrapper {
-  position: relative;
-  z-index: 1;
   overflow-x: auto;
 }
 
@@ -114,4 +110,76 @@
 
 .invoice-button:hover {
   background-color: #138496;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  max-width: 500px;
+  width: 100%;
+}
+
+.modal h2 {
+  margin-top: 0;
+}
+
+.modal form {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal label {
+  margin-bottom: 10px;
+}
+
+.modal input,
+.modal select {
+  padding: 8px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.modal button {
+  padding: 10px 20px;
+  margin: 5px 0;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.modal button[type="button"] {
+  background-color: #dc3545;
+  color: white;
+}
+
+.modal button[type="button"]:hover {
+  background-color: #c82333;
+}
+
+.modal button[type="submit"] {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.modal button[type="submit"]:hover {
+  background-color: #45a049;
 }
