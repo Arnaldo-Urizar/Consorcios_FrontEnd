@@ -35,8 +35,10 @@
 
     }
 
-    & div:nth-child(3) {
+    & .consumo {
         grid-area: aside3;
+        list-style: none;
+        text-decoration: none;
     }
 
     & div:nth-child(4) {

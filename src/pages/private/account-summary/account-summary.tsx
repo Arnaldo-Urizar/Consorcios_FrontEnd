@@ -9,13 +9,10 @@ import {
   BarChart,
   Bar,
   Rectangle,
-  XAxis,
-  YAxis,
   CartesianGrid,
-  Tooltip,
-  Legend,
   ResponsiveContainer,
 } from "recharts";
+import { Link } from "react-router-dom";
 
 const AccountSummary = () => {
   useEffect(() => {
@@ -119,7 +116,7 @@ const AccountSummary = () => {
           </div>
           <h4>Informacion del cliente</h4>
         </div>
-        <div className={styles.card}>
+        <Link to={"/consumo"} className={`${styles.card} ${styles.consumo}`}>
           <div>
             <p>Consumo del Mes: 15 metros cúbicos</p>
             <p>Tarifa: Tarifa A</p>
@@ -138,10 +135,11 @@ const AccountSummary = () => {
               }}
             >
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" stroke="#fff" />
+              {/* <XAxis dataKey="name" stroke="#fff" />
               <YAxis stroke="#fff" />
               <Tooltip />
               <Legend />
+              */}
               <Bar
                 dataKey="pv"
                 fill="#fff"
@@ -149,13 +147,13 @@ const AccountSummary = () => {
               />
               <Bar
                 dataKey="uv"
-                fill="#2b2d42"
+                fill="#82ca9d"
                 activeBar={<Rectangle fill="red" stroke="white" />}
               />
             </BarChart>
           </ResponsiveContainer>
           <h4>CONSUMO DE AGUA</h4>
-        </div>
+        </Link>
         <div className={styles.card}>
           <div>
             <p>- Cargos por Consumo: $30.00</p>

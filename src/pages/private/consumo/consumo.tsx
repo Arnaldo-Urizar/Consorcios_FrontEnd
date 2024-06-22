@@ -1,0 +1,121 @@
+import Cover from "../../../components/cover/cover";
+import Footer from "../../../components/footer/Footer";
+import Navbar from "../../../components/navbar/Navbar";
+import { SEO } from "../../../components/seo/SEO";
+import Wave from "../../../components/wave/Wave";
+import styles from "./consumo.module.css";
+import {
+  BarChart,
+  Bar,
+  Rectangle,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
+
+const data = [
+  {
+    name: "Page A",
+    uv: 4000,
+    pv: 2400,
+    amt: 2400,
+  },
+  {
+    name: "Page B",
+    uv: 3000,
+    pv: 1398,
+    amt: 2210,
+  },
+  {
+    name: "Page C",
+    uv: 2000,
+    pv: 9800,
+    amt: 2290,
+  },
+  {
+    name: "Page D",
+    uv: 2780,
+    pv: 3908,
+    amt: 2000,
+  },
+  {
+    name: "Page E",
+    uv: 1890,
+    pv: 4800,
+    amt: 2181,
+  },
+  {
+    name: "Page F",
+    uv: 2390,
+    pv: 3800,
+    amt: 2500,
+  },
+  {
+    name: "Page G",
+    uv: 3490,
+    pv: 4300,
+    amt: 2100,
+  },
+];
+
+const Consumo = () => {
+  return (
+    <>
+      <SEO
+        title="Consumo | Consorcio de Agua Santa Maria de Oro"
+        description="la pagina de Consumo del consorcio de agua Santa Maria de Oro"
+        name="Consorcio de Agua Santa Maria De Oro"
+        type="article"
+      />
+      <Wave pos1="absolute" pos2="absolute" pos3="absolute" />
+      <Navbar />
+      <Cover
+        title="Grafica del"
+        highlight="Consumo de agua"
+        imageUrl="src/assets/img/undraw_data_re_80ws.svg"
+        imageAlt="image Cover"
+        linkTo="/home"
+        linkText="Pagina principal"
+        description="Te mostramos el consumo de agua que has tenido a lo largo de todo el año."
+      />
+
+      <div className={styles.container}>
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart
+            width={500}
+            height={300}
+            data={data}
+            margin={{
+              top: 5,
+              right: 30,
+              left: 20,
+              bottom: 5,
+            }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar
+              dataKey="pv"
+              fill="#8884d8"
+              activeBar={<Rectangle fill="pink" stroke="blue" />}
+            />
+            <Bar
+              dataKey="uv"
+              fill="#82ca9d"
+              activeBar={<Rectangle fill="gold" stroke="purple" />}
+            />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+      <Footer />
+    </>
+  );
+};
+
+export default Consumo;

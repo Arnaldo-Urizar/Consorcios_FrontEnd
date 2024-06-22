@@ -13,6 +13,7 @@ import Passwordrecovery from "./pages/public/passwordRecovery/Passwordrecovery";
 import Info from "./pages/public/info/Info";
 import FaqPage from "./pages/public/faq/faq";
 import AccountSummary from "./pages/private/account-summary/account-summary";
+import Consumo from "./pages/private/consumo/consumo";
 
 export const App = () => {
   return (
@@ -30,9 +31,13 @@ const AppContent = () => {
         <Route path="/" element={<Login />} />
         <Route path="/changeCode" element={<ChangeCode />} />
         <Route path="/passwordrecovery" element={<Passwordrecovery />} />
+
+        {/* rutas que estan todavia sin roles */}
         <Route path="/faq" element={<FaqPage />} />
         <Route path="/account" element={<AccountSummary />} />
         <Route path="/info" element={<Info />} />
+        <Route path="/consumo" element={<Consumo />} />
+        {/* rutas que estan todavia sin roles */}
 
         {/* Se especifica que roles tienen acceso */}
         <Route
