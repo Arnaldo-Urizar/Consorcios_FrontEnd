@@ -1,0 +1,117 @@
+.user-table-section {
+  position: relative;
+  min-height: 100vh;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.user-table-container {
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto;
+  z-index: 1;
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+}
+
+.add-button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 24px;
+  margin-bottom: 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.add-button:hover {
+  background-color: #45a049;
+}
+
+.table-wrapper {
+  position: relative;
+  z-index: 1;
+  overflow-x: auto;
+}
+
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+
+.user-table th,
+.user-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+}
+
+.user-table th {
+  background-color: #f2f2f2;
+  color: #333;
+  font-weight: bold;
+}
+
+.user-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.user-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.edit-button,
+.disable-button,
+.invoice-button {
+  padding: 8px 16px;
+  margin: 4px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.edit-button {
+  background-color: #007bff;
+  color: white;
+}
+
+.edit-button:hover {
+  background-color: #0056b3;
+}
+
+.disable-button {
+  background-color: #dc3545;
+  color: white;
+}
+
+.disable-button:hover {
+  background-color: #c82333;
+}
+
+.enable-button {
+  background-color: #28a745;
+  color: white;
+}
+
+.enable-button:hover {
+  background-color: #218838;
+}
+
+.invoice-button {
+  background-color: #17a2b8;
+  color: white;
+}
+
+.invoice-button:hover {
+  background-color: #138496;
+}
