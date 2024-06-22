@@ -12,6 +12,8 @@ import ChangeCode from "./pages/public/changeCode/ChangeCode";
 import Passwordrecovery from "./pages/public/passwordRecovery/Passwordrecovery";
 import Info from "./pages/public/Info";
 import TryComp from "./pages/public/try";
+import Footer from "./components/footer/Footer";
+import UserManagment from "./pages/public/userManagement/UserTable";
 
 export const App = () => {
   return (
@@ -30,6 +32,7 @@ const AppContent = () => {
         <Route path="/changeCode" element={<ChangeCode />} />
         <Route path="/passwordrecovery" element={<Passwordrecovery />} />
         <Route path="/try" element={<TryComp />} />
+        <Route path="/usertable" element={<UserManagment />} />
 
         {/* Se especifica que roles tienen acceso */}
         <Route
@@ -45,6 +48,7 @@ const AppContent = () => {
           {/* {Colocar rutas privadas} */}
         </Route>
       </Routes>
+       <Footer />
     </BrowserRouter>
   );
 };
