@@ -11,9 +11,8 @@ import Navbar from "./components/navbar/Navbar";
 import ChangeCode from "./pages/public/changeCode/ChangeCode";
 import Passwordrecovery from "./pages/public/passwordRecovery/Passwordrecovery";
 import Info from "./pages/public/Info";
-import TryComp from "./pages/public/try";
 import Footer from "./components/footer/Footer";
-import UserManagment from "./pages/public/userManagement/UserTable";
+import UserManagment from "./pages/private/userManagement/UserTable";
 
 export const App = () => {
   return (
@@ -31,21 +30,17 @@ const AppContent = () => {
         <Route path="/" element={<Login />} />
         <Route path="/changeCode" element={<ChangeCode />} />
         <Route path="/passwordrecovery" element={<Passwordrecovery />} />
-        <Route path="/try" element={<TryComp />} />
-        <Route path="/usertable" element={<UserManagment />} />
 
         {/* Se especifica que roles tienen acceso */}
-        <Route
-          element={
-            <ProtectedRoutes allowedRoles={["ROLE_USER", "ROLE_ADMIN"]} />
-          }
-        >
+        <Route element={<ProtectedRoutes allowedRoles={["ROLE_USER", "ROLE_ADMIN"]} />}>
           <Route path="/inicio" element={<Home />} />
           <Route path="/notifications" element={<Info />} />
         </Route>
 
         <Route element={<ProtectedRoutes allowedRoles={["ROLE_ADMIN"]} />}>
           {/* {Colocar rutas privadas} */}
+          <Route path="/usertable" element={<UserManagment />} />
+
         </Route>
       </Routes>
        <Footer />
