@@ -1,8 +1,8 @@
 import {useState } from 'react';
 import Wave from "../../../components/wave/Wave";
-import './UserTable.css';
 import Navbar from "../../../components/navbar/Navbar";
 import { Alert } from '../../../components/alert/Alert';
+import './UserTable.css';
 
 import UserData from '../../../models/UserData';
 import UserCreate from '../../../models/UserCreate';
@@ -13,44 +13,26 @@ import UserActive from '../../../models/UserActive';
 function UserTable() {
 
   const defaultUserData: UserData = {
-    id: 0,
-    firstname: "",
-    lastname: "",
-    email: "",
-    dni: 0,
-    phone: 0,
-    username: "",
-    active: false
+    id: 0, firstname: "", lastname: "",email: "",dni: 0, phone: 0,username: "", active: false
   }
-
 
   const [users, setUsers] = useState<UserData[]>([]);
-
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState(defaultUserData); 
 
-
-  const [loading, setLoading] = useState(false);
+  //Modales
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [showMessageOK, setShowMessageOK] = useState({message: "", isActive: false});
   const [showError, setShowError] = useState({message: "", isActive: false});
-
-
-
-  const handleClosedModal= ()=>{
-    setShowMessageOK({message: "", isActive: false})
-    setShowError({message: "", isActive: false})
-
-  }
 
   //Obtener token de sesion storage
   const authToken = sessionStorage.getItem('token');
 
-  const genericDataFetch = async (formData: UserCreate | UserUpdate | UserActive, url: string)=>{
-    setLoading(true);
+  //Fetch POST
+  const genericDataFetch = async (method:string, formData: UserCreate | UserUpdate | UserActive, url: string)=>{
     try{
         const response = await fetch(url,{  
-            method: "POST",
+            method: method,
             headers: {
               "Content-Type": "application/json",
               'Authorization': `Bearer ${authToken}`,
@@ -63,67 +45,19 @@ function UserTable() {
             setShowMessageOK({message: data.message, isActive: true})
             return data
         }
-        throw new Error(`Error response fetch: ${response.status}`);  
+        throw new Error(`Error: ${response.status}`);  
         
     }catch(error){
-      setShowError({message: error.message, isActive: true})
-    } finally {
-      setLoading(false);
-    }    
+      setShowError({message: error.message, isActive: true}) 
+    } 
   }
 
-  //Obtener lista de usuarios
-  const handleGetUsers = async()=>{
-    setLoading(true);
-    try{
-        const response = await fetch("https://530a16d0-bac8-41f6-bdb2-8658632a0ab1.mock.pstmn.io/users",{  
-            method: "GET",
-            headers: {
-              'Authorization': `Bearer ${authToken}`,
-            },
-        });
 
-        if(response.ok){
-            const data = await response.json();
-            setShowMessageOK({message: data.message, isActive: true})
-            setUsers(data.users);
-            console.log(data.users)
-            return 
-        }
-        throw new Error(`Error response fetch: ${response.status}`);  
-        
-    }catch(error){
-      console.log(error)
-      setShowError({message: error.message, isActive: true})
-    } finally {
-      setLoading(false);
-    }   
-  }
-  
-  // Función para manejar la edición de un usuario
+  // Obtiene id de usuario a Editar
   const handleEdit = (userId : number) => {
     const user = users.find(user => user.id === userId);
     setCurrentUser(user);
     setIsEditModalOpen(true);
-    console.log("se obtuvo el usuario con id: " + userId)
-  };
-
-  // Función para cambiar el estado (Activo/Inactivo) de un usuario
-  const handleDisable = async (userId: number) => {
-
-    //identifica el usuario, guarda el nuevo estado en newStatus
-    const newStatus = users.filter(user => user.id === userId)
-    .map(user => !user.active)
-
-    console.log("nuevo estado")
-    console.log(newStatus)
-    const formData : UserActive = {
-      id: userId,
-      active: newStatus[0]
-    }
-    console.log("formdata")
-    console.log(formData)
-    // await genericDataFetch(formData,"url");
   };
 
   // Función para manejar la acción de mostrar las facturas de un usuario
@@ -131,59 +65,89 @@ function UserTable() {
     alert(`Facturas del usuario con ID: ${userId}`);
   };
 
-
-
+  //------------------Modales-------------------------//
+  // Función para cerrar modal de Error
+  const handleClosedModal= ()=>{
+    setShowMessageOK({message: "", isActive: false})
+    setShowError({message: "", isActive: false})
+  }
   // Función para cerrar el modal de editar usuario
   const handleCloseEditModal = () => {
     setIsEditModalOpen(false);
     setCurrentUser(defaultUserData);
   };
-
-
   // Función para abrir el modal de agregar usuario
   const handleAddUser = () => {
     setIsAddModalOpen(true);
   };
-
   // Función para cerrar el modal de agregar usuario
   const handleCloseAddModal = () => {
     setIsAddModalOpen(false);
   };
 
-  // Función para manejar la lógica de agregar usuario (submit del formulario)
+ //-------------------CRUD----------------------------// 
+
+  //Obtener usuarios
+  const handleGetUsers = async()=>{
+    try{
+        const response = await fetch("http://localhost:8080/users/active",{  
+            method: "GET",
+            headers: {
+              'Authorization': `Bearer ${authToken}`,
+            },
+        });
+        if(response.ok){
+            const data = await response.json();
+            setUsers(data.users);
+            return;
+        }
+        throw new Error(`Error: ${response.status}`);  
+    }catch(error){  
+      setShowError({message: error.message , isActive: true})
+    }
+  }
+  // Agregar usuario 
   const handleSubmitAddUser = async(event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    
-    const createUser : UserCreate = {
-      username: formData.get('username') as string,
-      firstname: formData.get('firstName') as string,
-      lastname: formData.get('lastName') as string,
-      dni: Number(formData.get('dni')),
-      phone: Number(formData.get('phone')),
-      password: formData.get('password') as string
-    };
-    console.log(createUser)
-    await genericDataFetch(createUser, "https://530a16d0-bac8-41f6-bdb2-8658632a0ab1.mock.pstmn.io/createuser");
-    setIsAddModalOpen(false);
-  };
 
-  // Función para manejar la lógica de editar usuario (submit del formulario)
+    //Object.fromEntries: convierte el formData en objeto clave-valor.
+    const createUser = Object.fromEntries(formData.entries()) as unknown as UserCreate;
+
+    createUser.dni = Number(createUser.dni);
+    createUser.phone = Number(createUser.phone);
+
+    await genericDataFetch("POST", createUser, `http://localhost:8080/users/register`);
+    setIsAddModalOpen(false);
+
+  };
+  // Editar usuario
   const handleSubmitEditUser = async(event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
     
+    event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    const updatedUser : UserUpdate = {
-      id: currentUser.id,
-      firstname: formData.get('firstName') as string,
-      lastname: formData.get('lastName') as string,
-      dni: Number( formData.get('dni')),
-      phone: Number(formData.get('phone')),
-      username: formData.get('username') as string
-    };
-    await genericDataFetch(updatedUser, "rutaaaa");
+    const updatedUser = Object.fromEntries(formData.entries()) as unknown as UserUpdate;
+
+    updatedUser.dni = Number(updatedUser.dni);
+    updatedUser.phone = Number(updatedUser.phone);
+
+    await genericDataFetch("PUT",updatedUser, `http://localhost:8080/users/${updatedUser.id}`);
     setIsEditModalOpen(false);
     setCurrentUser(defaultUserData); 
+  };
+
+  // Hbilitar/Inhabilitar usuario
+  const handleDisable = async (userId: number) => {
+
+    //identifica el usuario, guarda el nuevo estado en newStatus
+    const newStatus = users.filter(user => user.id === userId)
+    .map(user => !user.active)
+
+    const formData : UserActive = {
+      id: userId,
+      active: newStatus[0]
+    }
+    await genericDataFetch("PUT",formData,`http://localhost:8080/users/desactive/${formData.id}`);
   };
 
   return (
@@ -192,8 +156,8 @@ function UserTable() {
       <Navbar />
       <section className="user-table-section">
         <div className="user-table-container">
+        <button className="show-button" onClick={handleGetUsers}>Mostrar Usuarios</button>
           <button className="add-button" onClick={handleAddUser}>Agregar Usuario</button>
-          <button className="add-button" onClick={handleGetUsers}>Mostrar Usuarios</button>
           <div className="table-wrapper">
             <table className="user-table">
               <thead>
@@ -313,15 +277,24 @@ function UserTable() {
           </div>
         )}
       </section>
+      {showError.isActive &&(
+          <Alert
+          title="No se pudo completar la acción"
+          description={showError.message }
+          btn="Aceptar"
+          show={showError.isActive}
+          onClose={handleClosedModal}
+          ></Alert>          
+      )}
       {showMessageOK.isActive &&(
           <Alert
-          title=""
+          title="Operación exitosa"
           description={showMessageOK.message }
           btn="Aceptar"
           show={showMessageOK.isActive}
           onClose={handleClosedModal}
           ></Alert>          
-        )}
+      )}        
     </>
   );
 }
