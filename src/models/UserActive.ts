@@ -1,4 +1,4 @@
 export default interface UserActive {
-    id: number;
-    active: boolean;
+    id_user: number;
+    status: string;
 }
