@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import Cover from "../../../components/cover/cover";
 import Navbar from "../../../components/navbar/Navbar";
-import Wave from "../../../components/wave/Wave";
+
 import styles from "./account-summary.module.css";
 import Footer from "../../../components/footer/Footer";
 import { SEO } from "../../../components/seo/SEO";
@@ -92,8 +92,10 @@ const AccountSummary = () => {
         name="Consorcio de Agua Santa Maria De Oro"
         type="article"
       />
-      <Wave pos1="absolute" pos2="absolute" pos3="absolute" />
+      {/* <Wave pos1="absolute" pos2="absolute" pos3="absolute" /> */}
+
       <Navbar />
+
       <Cover
         title="Resumen de"
         highlight="cuenta"
@@ -103,6 +105,7 @@ const AccountSummary = () => {
         imageUrl="src/assets/img/undraw_data_re_80ws.svg"
         imageAlt="image Cover"
       />
+
       <div id="cards" className={styles.account}>
         <div className={`${styles.guardia} ${styles.card}`}>
           <h3>Servicio de Guardia</h3>

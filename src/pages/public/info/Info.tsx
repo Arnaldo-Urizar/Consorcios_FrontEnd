@@ -1,6 +1,5 @@
 import Navbar from "../../../components/navbar/Navbar";
 import { SEO } from "../../../components/seo/SEO";
-import Wave from "../../../components/wave/Wave";
 import styles from "./info.module.css";
 
 function Info() {
@@ -12,7 +11,6 @@ function Info() {
         name="Consorcio de Agua Santa Maria De Oro"
         type="article"
       />
-      <Wave pos1="fixed" pos2="fixed" pos3="fixed" />
       <Navbar />
       <div className={styles.container}>
         <div className={styles.title}>

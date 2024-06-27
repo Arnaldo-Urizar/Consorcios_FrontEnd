@@ -1,28 +1,27 @@
+import Wave from "react-wavify";
 import styles from "./wave.module.css";
 
-interface WaveProps {
-  pos1?: string;
-  pos2?: string;
-  pos3?: string;
-}
-function Wave(props: WaveProps) {
-  const { pos1, pos2, pos3 } = props;
-
+function WaveComponent() {
   return (
-    <div>
-      <div className={styles.cover}>
-        <div className={styles.bg_color} style={{ position: pos1 }}></div>
-        <div
-          className={`${styles.wave} ${styles.w1}`}
-          style={{ position: pos2 }}
-        ></div>
-        <div
-          className={`${styles.wave} ${styles.w2}`}
-          style={{ position: pos3 }}
-        ></div>
-      </div>
+    <div className={styles.container}>
+      <div className={styles.background} />
+      <Wave
+        fill="var(--primary-color)"
+        paused={false}
+        style={{
+          display: "flex",
+          zIndex: -50,
+          transform: "rotate(180deg)",
+        }}
+        options={{
+          height: 50,
+          amplitude: 45,
+          speed: 0.25,
+          points: 3,
+        }}
+      />
     </div>
   );
 }
 
-export default Wave;
+export default WaveComponent;

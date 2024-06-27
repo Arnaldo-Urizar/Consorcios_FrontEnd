@@ -14,6 +14,7 @@ import Info from "./pages/public/info/Info";
 import FaqPage from "./pages/public/faq/faq";
 import AccountSummary from "./pages/private/account-summary/account-summary";
 import Consumo from "./pages/private/consumo/consumo";
+import WaveComponent from "./components/wave/Wave";
 
 export const App = () => {
   return (
@@ -27,6 +28,8 @@ const AppContent = () => {
   return (
     <BrowserRouter>
       {userState.isLogin && <Navbar />}
+
+      <WaveComponent />
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/changeCode" element={<ChangeCode />} />

@@ -2,7 +2,6 @@ import Cover from "../../../components/cover/cover";
 import Footer from "../../../components/footer/Footer";
 import Navbar from "../../../components/navbar/Navbar";
 import { SEO } from "../../../components/seo/SEO";
-import Wave from "../../../components/wave/Wave";
 import styles from "./faq.module.css";
 
 const FaqPage = () => {
@@ -14,7 +13,6 @@ const FaqPage = () => {
         name="Consorcio de Agua Santa Maria De Oro"
         type="FAQ"
       />
-      <Wave pos1="absolute" pos2="absolute" pos3="absolute" />
       <Navbar />
       <Cover
         title="Preguntas "
