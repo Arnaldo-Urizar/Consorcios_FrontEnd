@@ -1,5 +1,5 @@
 export default interface UserUpdate {
-    id: number;
+    id_user: number;
     username: string;
     firstname: string;
     lastname: string;

@@ -3,7 +3,6 @@ import Wave from "../../../components/wave/Wave";
 import Navbar from "../../../components/navbar/Navbar";
 import { Alert } from '../../../components/alert/Alert';
 import './UserTable.css';
-
 import UserData from '../../../models/UserData';
 import UserCreate from '../../../models/UserCreate';
 import UserUpdate from '../../../models/UserUpdate';
@@ -13,7 +12,7 @@ import UserActive from '../../../models/UserActive';
 function UserTable() {
 
   const defaultUserData: UserData = {
-    id: 0, firstname: "", lastname: "",email: "",dni: 0, phone: 0,username: "", active: false
+    id_user: 0, firstname: "", lastname: "", dni: 0, phone: 0, username: "", status: "INACTIVE"
   }
 
   const [users, setUsers] = useState<UserData[]>([]);
@@ -26,7 +25,10 @@ function UserTable() {
   const [showError, setShowError] = useState({message: "", isActive: false});
 
   //Obtener token de sesion storage
-  const authToken = sessionStorage.getItem('token');
+  let authToken = sessionStorage.getItem('token');
+  if (authToken) {
+    authToken = authToken.replace(/^"(.*)"$/, '$1');
+  }
 
   //Fetch POST
   const genericDataFetch = async (method:string, formData: UserCreate | UserUpdate | UserActive, url: string)=>{
@@ -43,7 +45,7 @@ function UserTable() {
         if(response.ok){
             const data = await response.json();
             setShowMessageOK({message: data.message, isActive: true})
-            return data
+            return data;
         }
         throw new Error(`Error: ${response.status}`);  
         
@@ -55,7 +57,7 @@ function UserTable() {
 
   // Obtiene id de usuario a Editar
   const handleEdit = (userId : number) => {
-    const user = users.find(user => user.id === userId);
+    const user = users.find(user => user.id_user === userId);
     setCurrentUser(user);
     setIsEditModalOpen(true);
   };
@@ -90,7 +92,7 @@ function UserTable() {
   //Obtener usuarios
   const handleGetUsers = async()=>{
     try{
-        const response = await fetch("http://localhost:8080/users/active",{  
+        const response = await fetch("http://localhost:8080/users",{  
             method: "GET",
             headers: {
               'Authorization': `Bearer ${authToken}`,
@@ -98,7 +100,8 @@ function UserTable() {
         });
         if(response.ok){
             const data = await response.json();
-            setUsers(data.users);
+            setUsers(data);
+            console.log(data)
             return;
         }
         throw new Error(`Error: ${response.status}`);  
@@ -131,7 +134,9 @@ function UserTable() {
     updatedUser.dni = Number(updatedUser.dni);
     updatedUser.phone = Number(updatedUser.phone);
 
-    await genericDataFetch("PUT",updatedUser, `http://localhost:8080/users/${updatedUser.id}`);
+    console.log(updatedUser);
+
+    await genericDataFetch("PUT",updatedUser, `http://localhost:8080/users/update?id=${currentUser.id_user}`);
     setIsEditModalOpen(false);
     setCurrentUser(defaultUserData); 
   };
@@ -140,14 +145,15 @@ function UserTable() {
   const handleDisable = async (userId: number) => {
 
     //identifica el usuario, guarda el nuevo estado en newStatus
-    const newStatus = users.filter(user => user.id === userId)
-    .map(user => !user.active)
+    const newStatus = users.filter(user => user.id_user === userId)
+    .map(user => user.status == "ACTIVE" ? "INACTIVE" : "ACTIVE") [0];
 
     const formData : UserActive = {
-      id: userId,
-      active: newStatus[0]
+      id_user: userId,
+      status: newStatus
     }
-    await genericDataFetch("PUT",formData,`http://localhost:8080/users/desactive/${formData.id}`);
+
+    await genericDataFetch("PUT",formData,`http://localhost:8080/users/toggle-activation?id=${formData.id_user}&status=${formData.status}`);
   };
 
   return (
@@ -156,41 +162,40 @@ function UserTable() {
       <Navbar />
       <section className="user-table-section">
         <div className="user-table-container">
-        <button className="show-button" onClick={handleGetUsers}>Mostrar Usuarios</button>
+          <button className="show-button" onClick={handleGetUsers}>Mostrar Usuarios</button>
           <button className="add-button" onClick={handleAddUser}>Agregar Usuario</button>
+          <input className="input" placeholder='Buscar usuario por nombre o dni'></input> {/* Mejorar buscador "localhost:8080/users/search?dni=212" "localhost:8080/users/search?name=arni" */}
           <div className="table-wrapper">
             <table className="user-table">
               <thead>
                 <tr>
                   <th>Nombre</th>
                   <th>Apellido</th>
-                  <th>Email</th>
                   <th>DNI</th>
                   <th>Celular</th>
                   <th>Estado</th>
-                  <th>Nombre de Usuario</th>
+                  <th>Email</th>
                   <th>Acciones</th>
                 </tr>
               </thead>
               <tbody>
                 {users.map(user => (
-                  <tr key={user.id}>
+                  <tr key={user.id_user}>
                     <td>{user.firstname}</td>
                     <td>{user.lastname}</td>
-                    <td>{user.email}</td>
                     <td>{user.dni}</td>
                     <td>{user.phone}</td>
-                    <td>{user.active ? "Activo ": "Inactivo"}</td>
+                    <td>{user.status === "ACTIVE" ? "Activo" : "Inactivo"}</td>
                     <td>{user.username}</td> {/* Mostrar el nombre de usuario */}
                     <td>
-                      <button className="edit-button" onClick={() => handleEdit(user.id)}>Editar</button>
+                      <button className="edit-button" onClick={() => handleEdit(user.id_user)}>Editar</button>
                       <button
-                        className={`disable-button ${user.active === false ? 'enable-button' : ''}`}
-                        onClick={() => handleDisable(user.id)}
+                        className={`disable-button ${user.status === "INACTIVE" ? 'enable-button' : ''}`}
+                        onClick={() => handleDisable(user.id_user)}
                       >
-                      {user.active === true ? 'Inhabilitar' : 'Habilitar'}
+                      {user.status === "ACTIVE" ? 'Inhabilitar' : 'Habilitar'}
                       </button>
-                      <button className="invoice-button" onClick={() => handleInvoice(user.id)}>Facturas</button>
+                      <button className="invoice-button" onClick={() => handleInvoice(user.id_user)}>Facturas</button>
                     </td>
                   </tr>
                 ))
@@ -208,15 +213,11 @@ function UserTable() {
               <form onSubmit={handleSubmitAddUser}>
                 <label>
                   Nombre:
-                  <input type="text" name="firstName" required />
+                  <input type="text" name="firstname" required />
                 </label>
                 <label>
                   Apellido:
-                  <input type="text" name="lastName" required />
-                </label>
-                <label>
-                  Email:
-                  <input type="email" name="email" required />
+                  <input type="text" name="lastname" required />
                 </label>
                 <label>
                   Contraseña:
@@ -231,7 +232,7 @@ function UserTable() {
                   <input type="text" name="phone" required />
                 </label>
                 <label>
-                  Nombre de Usuario:
+                  Email:
                   <input type="text" name="username" required />
                 </label>
                 <button type="button" onClick={handleCloseAddModal}>Cerrar</button>
@@ -248,15 +249,11 @@ function UserTable() {
               <form onSubmit={handleSubmitEditUser}>
                 <label>
                   Nombre:
-                  <input type="text" name="firstName" defaultValue={currentUser.firstname} required />
+                  <input type="text" name="firstname" defaultValue={currentUser.firstname} required />
                 </label>
                 <label>
                   Apellido:
-                  <input type="text" name="lastName" defaultValue={currentUser.lastname} required />
-                </label>
-                <label>
-                  Email:
-                  <input type="email" name="email" defaultValue={currentUser.email} required />
+                  <input type="text" name="lastname" defaultValue={currentUser.lastname} required />
                 </label>
                 <label>
                   DNI:
@@ -267,7 +264,7 @@ function UserTable() {
                   <input type="number" name="phone" defaultValue={currentUser.phone} required />
                 </label>
                 <label>
-                  Nombre de Usuario:
+                  Email:
                   <input type="text" name="username" defaultValue={currentUser.username} required />
                 </label>
                 <button type="button" onClick={handleCloseEditModal}>Cerrar</button>
