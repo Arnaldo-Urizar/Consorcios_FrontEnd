@@ -39,8 +39,7 @@ const AppContent = () => {
 
         <Route element={<ProtectedRoutes allowedRoles={["ROLE_ADMIN"]} />}>
           {/* {Colocar rutas privadas} */}
-          <Route path="/usertable" element={<UserManagment />} />
-
+          <Route path="/users" element={<UserManagment />} />
         </Route>
       </Routes>
        <Footer />

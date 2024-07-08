@@ -1,4 +1,4 @@
-import {useContext, useState } from 'react';
+import {useContext, useEffect, useState } from 'react';
 import Wave from "../../../components/wave/Wave";
 import Navbar from "../../../components/navbar/Navbar";
 import { Alert } from '../../../components/alert/Alert';
@@ -28,6 +28,9 @@ function UserTable() {
   const [showMessageOK, setShowMessageOK] = useState({message: "", isActive: false});
   const [showError, setShowError] = useState({message: "", isActive: false});
 
+  useEffect(()=>{
+    handleGetUsers();
+  },[])
 
   // Obtiene id de usuario a Editar
   const handleEdit = (userId : number) => {
@@ -133,7 +136,6 @@ function UserTable() {
       <Navbar />
       <section className="user-table-section">
         <div className="user-table-container">
-          <button className="show-button" onClick={handleGetUsers}>Mostrar Usuarios</button>
           <button className="add-button" onClick={handleAddUser}>Agregar Usuario</button>
           <input className="input" placeholder='Buscar usuario por nombre o dni'></input> {/* Mejorar buscador "localhost:8080/users/search?dni=212" "localhost:8080/users/search?name=arni" */}
           <div className="table-wrapper">
