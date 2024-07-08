@@ -3,6 +3,8 @@ import styles from "./changeCode.module.css"
 import styleLogin from "../login/login.module.css"
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate} from "react-router-dom";
+import NewPassword from "../../../models/NewPassword";
+import { modifyPassword } from "../../../service/requests";
 
 import { Alert } from "../../../components/alert/Alert";
 
@@ -65,27 +67,15 @@ const ChangeCode: React.FC = () => {
             setShowAlertPassword(true);
         }else{
             //Crea el objeto con los datos y los envia al servidor
-            const formData = {
+            const formData: NewPassword = {
                 token: tokenRestorePass,
                 newPassword: newCode
             }   
             try{
-                const response = await fetch("http://localhost:8080/auth/reset",{  
-                    method: "POST",
-                    headers: {"Content-Type": "application/json"},
-                    body: JSON.stringify(formData)
-                })
-                if(response.ok){                   
-                    await response.json();
-                    setCodeChanged(true);
-                }else{
-                    throw new Error(`Error response fetch: ${response.status}`);
-                }
-            
+                await modifyPassword(formData);
+                setCodeChanged(true);
             }catch(e){
                 setShowAlertServer(true)
-                throw new Error(`Fetch failed: ${e}`);
-
             } finally {
                 setLoading(false);
             }

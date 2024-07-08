@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import Wave from "../../../components/wave/Wave";
 import styles from "../login/login.module.css"
 import { Alert } from "../../../components/alert/Alert";
+import { passRecovery } from "../../../service/requests";
+import Email from "../../../models/Email";
 
 const Passwordrecovery: React.FC = () => {
     const [email, setEmail] = useState("");
@@ -20,37 +22,18 @@ const Passwordrecovery: React.FC = () => {
         setShowAlertServer(false)
     };
 
-    const formData = {
+    const formData: Email = {
         email
     };
 
     const handleSubmit = async(event: React.FormEvent) => {
         event.preventDefault();
         setLoading(true);
-
         try{
-            const response = await fetch("http://localhost:8080/auth/forgot",{  
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(formData)
-            });
-
-            if(response.ok){
-                const data = await response.json();
-                if(data.message ===  "Correo electrónico de restablecimiento de contraseña enviado"){
-                    setShowConfirmation(true)
-                }else{
-                    setShowAlert(true)
-                }
-            }else{
-                
-                throw new Error(`Error response fetch: ${response.status}`);
-                
-            }
+            await passRecovery(formData)
+            setShowConfirmation(true)
         }catch(e){
             setShowAlertServer(true)
-            throw new Error(`Fetch failed: ${e}`);
-
         } finally {
             setLoading(false);
         }

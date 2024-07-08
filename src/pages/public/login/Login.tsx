@@ -1,7 +1,7 @@
 import Wave from "../../../components/wave/Wave";
 import styles from "./login.module.css";
 import { useContext, useEffect, useState } from "react";
-import { userFetch } from "../../../service/auth";
+import { userFetch } from "../../../service/requests";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../service/AuthContext";
 import JwtDto from "../../../models/JwtDto";
