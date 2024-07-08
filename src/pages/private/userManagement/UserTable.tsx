@@ -1,4 +1,4 @@
-import {useState } from 'react';
+import {useContext, useState } from 'react';
 import Wave from "../../../components/wave/Wave";
 import Navbar from "../../../components/navbar/Navbar";
 import { Alert } from '../../../components/alert/Alert';
@@ -8,9 +8,12 @@ import UserCreate from '../../../models/UserCreate';
 import UserUpdate from '../../../models/UserUpdate';
 import UserActive from '../../../models/UserActive';
 import { getUsers , updateUser, addUser, stateUser} from '../../../service/requests';
-
+import { AuthContext } from '../../../service/AuthContext';
 
 function UserTable() {
+
+  const {userState} = useContext(AuthContext)
+  const token = userState.token
 
   const defaultUserData: UserData = {
     id_user: 0, firstname: "", lastname: "", dni: 0, phone: 0, username: "", status: "INACTIVE"
@@ -25,11 +28,6 @@ function UserTable() {
   const [showMessageOK, setShowMessageOK] = useState({message: "", isActive: false});
   const [showError, setShowError] = useState({message: "", isActive: false});
 
-  //Obtener token de sesion storage
-  let authToken: string | null = sessionStorage.getItem('token');
-  if (authToken) {
-    authToken = authToken.replace(/^"(.*)"$/, '$1');
-  }
 
   // Obtiene id de usuario a Editar
   const handleEdit = (userId : number) => {
@@ -38,7 +36,7 @@ function UserTable() {
     setIsEditModalOpen(true);
   };
 
-  // Función para manejar la acción de mostrar las facturas de un usuario
+  //Mostrar facturas de usuario
   const handleInvoice = (userId: number) => {
     alert(`Facturas del usuario con ID: ${userId}`);
   };
@@ -68,7 +66,7 @@ function UserTable() {
   //Obtener usuarios
   const handleGetUsers = async()=>{
     try{
-      const users = await getUsers(authToken)
+      const users = await getUsers(token)
       setUsers(users);
     }catch(e){
       setShowError({message: e.message , isActive: true})
@@ -85,7 +83,7 @@ function UserTable() {
     createUser.phone = Number(createUser.phone);
 
     try{
-      const userAdded= await addUser(authToken,createUser)
+      const userAdded= await addUser(token,createUser)
       setShowMessageOK({message: userAdded.message, isActive: true});
       setIsAddModalOpen(false);
     }catch(e){
@@ -103,7 +101,7 @@ function UserTable() {
     updatedUser.phone = Number(updatedUser.phone);
 
     try{
-      const userUdated = await updateUser(authToken,currentUser.id_user,updatedUser)
+      const userUdated = await updateUser(token,currentUser.id_user,updatedUser)
       setShowMessageOK({message: userUdated.message, isActive: true})
       setIsEditModalOpen(false);
       setCurrentUser(defaultUserData); 
@@ -122,7 +120,7 @@ function UserTable() {
       status: newStatus
     }
     try{
-      const stateUpdated = await stateUser(authToken,formData.id_user,formData.status)
+      const stateUpdated = await stateUser(token,formData.id_user,formData.status)
       setShowMessageOK({message: stateUpdated.message, isActive: true})
     }catch(e){
       setShowError({message: e.message, isActive: true}) 
