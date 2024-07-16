@@ -1,0 +1,50 @@
+.accordion_container {
+    margin: 5rem 0;
+}
+
+.accordion {
+    width: 100%;
+    max-width: 600px;
+    margin: 1.5rem auto;
+    color: white;
+
+    & summary {
+        padding: 0.5rem;
+        cursor: pointer;
+        border-radius: 10rem;
+        text-transform: uppercase;
+        background-color: var(--primary-color);
+        transition: opacity 200ms ease;
+        text-wrap: nowrap;
+
+    }
+
+    & summary:hover {
+        opacity: .7;
+    }
+
+    & summary:active {
+        cursor: progress;
+    }
+
+    & p {
+        padding: 0.5rem;
+        color: black;
+        text-align: center;
+        text-wrap: pretty;
+    }
+}
+
+
+@media screen and (max-width: 760px) {
+
+    .accordion_container {
+        margin-top: 11rem;
+    }
+
+    .accordion {
+        width: 100%;
+        max-width: 450px;
+    }
+
+}

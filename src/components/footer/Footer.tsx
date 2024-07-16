@@ -30,12 +30,12 @@ function Footer() {
             to="https://www.google.com/maps/place/CLUB+SANTA+MARIA/@-33.207028,-68.4245363,321m/data=!3m1!1e3!4m6!3m5!1s0x967e59fc88ce3c3f:0xb1ff918bf093f8fe!8m2!3d-33.207201!4d-68.423545!16s%2Fg%2F11jsw09_j1?entry=ttu"
             target="_blank"
           >
-            Calle: Villanueva | Ver Ubicación
+            Calle: Villanueva | Ver Ubicacion
           </Link>
         </div>
 
         <div className={styles.box__footer}>
-          <h2>Compañía</h2>
+          <h2>Compañia</h2>
           <Link to="#">Acerca de</Link>
           <Link to="#">Trabajos</Link>
           <Link to="/faq">Preguntas frecuentes</Link>

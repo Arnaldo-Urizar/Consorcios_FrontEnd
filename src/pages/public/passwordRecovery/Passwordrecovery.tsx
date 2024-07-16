@@ -1,26 +1,25 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import Wave from "../../../components/wave/Wave";
-import styles from "../login/login.module.css"
+import styles from "../login/login.module.css";
 import { Alert } from "../../../components/alert/Alert";
 import { passRecovery } from "../../../service/requests";
 import Email from "../../../models/Email";
 
 const Passwordrecovery: React.FC = () => {
-    const [email, setEmail] = useState("");
-    const [showConfirmation, setShowConfirmation] = useState(false);
+  const [email, setEmail] = useState("");
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
-    //Alertas(modal)
-    const [showAlert, setShowAlert] = useState(false);
-    const [showAlertServer, setShowAlertServer] = useState(false);
-    const [loading, setLoading] = useState(false);
+  //Alertas(modal)
+  const [showAlert, setShowAlert] = useState(false);
+  const [showAlertServer, setShowAlertServer] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-    //cierra modal
-    const handleCloseAlert = () => {
-        setShowConfirmation(false);
-        setShowAlert(false)
-        setShowAlertServer(false)
-    };
+  //cierra modal
+  const handleCloseAlert = () => {
+    setShowConfirmation(false);
+    setShowAlert(false);
+    setShowAlertServer(false);
+  };
 
     const formData: Email = {
         email
@@ -64,54 +63,55 @@ const Passwordrecovery: React.FC = () => {
                     </Link>
                 </div>
 
-                <div className={styles.wrapper}>
-                    <h1 className={styles.inicio}>Olvidé mi Contraseña</h1>
-                    <form onSubmit={handleSubmit}>
-                        <div className={styles.input_box}>
-                            <input
-                                type="email"
-                                placeholder="Correo electrónico"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                required
-                                disabled={loading}
-                            />
-                            <i className='bx bx-mail-send'></i>
-                        </div>
-                        <button type="submit" className={styles.btn} disabled={loading}>{loading ? "Cargando..." : "Cambiar Contraseña"}</button>
-                    </form>
-                </div>
+        <div className={styles.wrapper}>
+          <h1 className={styles.inicio}>Olvidé mi Contraseña</h1>
+          <form onSubmit={handleSubmit}>
+            <div className={styles.input_box}>
+              <input
+                type="email"
+                placeholder="Correo electrónico"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                disabled={loading}
+              />
+              <i className="bx bx-mail-send"></i>
             </div>
-            {showConfirmation && (
-                <Alert
-                    title="¡Correo Enviado!"
-                    description="Revisa tu correo electrónico para establecer una nueva contraseña."
-                    btn="Aceptar"
-                    show={showConfirmation}
-                    onClose={handleCloseAlert}
-                ></Alert>
-            )}
-            {showAlert && (
-                <Alert
-                    title="Ups!"
-                    description="No se pudo completar la acción. Revisa que los datos ingresados sean correctos."
-                    btn="Aceptar"
-                    show={showAlert}
-                    onClose={handleCloseAlert}
-                ></Alert>
-            )}   
-            {showAlertServer && (
-                <Alert
-                    title="Ups!"
-                    description="No se pudo completar la acción. Intentalo más tarde."
-                    btn="Aceptar"
-                    show={showAlertServer}
-                    onClose={handleCloseAlert}
-                ></Alert>
-            )}              
-
-        </>
-    );
+            <button type="submit" className={styles.btn} disabled={loading}>
+              {loading ? "Cargando..." : "Cambiar Contraseña"}
+            </button>
+          </form>
+        </div>
+      </div>
+      {showConfirmation && (
+        <Alert
+          title="¡Correo Enviado!"
+          description="Revisa tu correo electrónico para establecer una nueva contraseña."
+          btn="Aceptar"
+          show={showConfirmation}
+          onClose={handleCloseAlert}
+        ></Alert>
+      )}
+      {showAlert && (
+        <Alert
+          title="Ups!"
+          description="No se pudo completar la acción. Revisa que los datos ingresados sean correctos."
+          btn="Aceptar"
+          show={showAlert}
+          onClose={handleCloseAlert}
+        ></Alert>
+      )}
+      {showAlertServer && (
+        <Alert
+          title="Ups!"
+          description="No se pudo completar la acción. Intentalo más tarde."
+          btn="Aceptar"
+          show={showAlertServer}
+          onClose={handleCloseAlert}
+        ></Alert>
+      )}
+    </>
+  );
 };
 
 export default Passwordrecovery;
