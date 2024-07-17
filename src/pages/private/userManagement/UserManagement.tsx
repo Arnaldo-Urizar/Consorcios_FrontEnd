@@ -1,12 +1,11 @@
 import {useContext, useEffect, useState } from 'react';
-import Navbar from "../../../components/navbar/Navbar";
 import { Alert } from '../../../components/alert/Alert';
 import './userManagement.css';
 import UserData from '../../../models/UserData';
 import UserCreate from '../../../models/UserCreate';
 import UserUpdate from '../../../models/UserUpdate';
 import UserActive from '../../../models/UserActive';
-import { getUsers , updateUser, addUser, stateUser} from '../../../service/requests';
+import { getUsers , updateUser, addUser, stateUser, searchUsers} from '../../../service/requests';
 import { AuthContext } from '../../../service/AuthContext';
 
 function UserManagement() {
@@ -20,6 +19,9 @@ function UserManagement() {
 
   const [users, setUsers] = useState<UserData[]>([]);
   const [currentUser, setCurrentUser] = useState(defaultUserData); 
+  const [searchValue, setSearchValue] = useState<string>('');
+  // const [searchData, setSearchData] = useState();
+
 
   //Modales
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -129,13 +131,36 @@ function UserManagement() {
     }
   };
 
+  const handleSearch = async(event: React.FormEvent<HTMLFormElement>)=>{
+    event.preventDefault();
+    const dataSearch: string | number = isNaN(Number(searchValue)) ? searchValue : Number(searchValue);
+    console.log(dataSearch);
+
+    try{
+      const data = await searchUsers(token, dataSearch);
+      setUsers(data);
+    }catch(e){
+      setShowError({message: e.message, isActive: true}) 
+    }
+  }
+
   return (
     <>
-      <Navbar />
       <section className="user-table-section">
         <div className="user-table-container">
-          <button className="add-button" onClick={handleAddUser}>Agregar Usuario</button>
-          <input className="input" placeholder='Buscar usuario por nombre o dni'></input> {/* Mejorar buscador "localhost:8080/users/search?dni=212" "localhost:8080/users/search?name=arni" */}
+          <div className='general_actions'>
+            <form className="searchForm" onSubmit={handleSearch}>
+              <input 
+                className="inputSearch" 
+                type='text' name="search" 
+                placeholder='Dni o Nombre' 
+                onChange={(e) => setSearchValue(e.target.value)}
+              ></input> {/* Mejorar buscador "localhost:8080/users/search?dni=212" "localhost:8080/users/search?name=arni" */}
+              <button type="submit" className='btn_search'>Buscar</button>
+            </form>
+            <button className="add-button" onClick={handleAddUser}>Agregar Usuario</button>
+          </div>
+
           <div className="table-wrapper">
             <table className="user-table">
               <thead>

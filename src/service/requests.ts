@@ -17,10 +17,10 @@ export const userFetch = async(userFront: UserFront)=>{
         if(response.ok){
             return await response.json()
         }else{
-            throw new Error(`Error response fetch: ${response.status}`);
+            throw new Error(`No se pudo iniciar sesión: ${response.status}`);
         }
     }catch(e){
-        throw new Error(`Fetch failed: ${e}`);
+        throw new Error(`Error desconocido: ${e}`);
     }
 }
 //ChangeCode
@@ -159,3 +159,25 @@ export async function stateUser(token: string, id_user: number, body: string){
           throw new Error('Error desconocido'); 
     }     
 }
+export async function searchUsers(token: string, searchData: string | number):Promise<UserData[]>{
+    const url = typeof searchData === "string" ? "name" : "dni";
+    try{
+        const response = await fetch(`http://localhost:8080/users/search?${url}=${searchData}`,{  
+            method: "GET",
+            headers: {
+              'Authorization': `Bearer ${token}`,
+            },
+        });
+        if(response.ok){
+            const data: UserData[] = await response.json();
+            return data;
+        }
+        throw new Error("No se encontraron resultados");  
+    }catch(e){  
+        if (e instanceof Error) {
+            throw new Error(e.message);
+          }
+          throw new Error('Error desconocido'); 
+    }
+}
+
