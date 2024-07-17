@@ -9,13 +9,8 @@ import { motion } from "framer-motion";
 import { SEO } from "../../../components/seo/SEO";
 import styles from "./home.module.css";
 
-import { useContext } from "react";
-import { AuthContext } from "../../../service/AuthContext";
-
 const Home: React.FC = () => {
-  const { userState } = useContext(AuthContext);
-  const user = userState.name;
-
+  
   return (
     <>
       <SEO
@@ -58,7 +53,7 @@ const Home: React.FC = () => {
                 <h4>Resumen</h4>
               </div>
             </Link>{" "}
-            <Link to={"/notifications"} className={styles.menu_item}>
+            <Link to={"/notificaciones"} className={styles.menu_item}>
               <div className={styles.icon}>
                 <HiMiniChatBubbleLeftEllipsis />
               </div>

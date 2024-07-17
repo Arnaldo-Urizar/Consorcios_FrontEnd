@@ -1,10 +1,12 @@
+import { useContext } from "react";
 import Cover from "../../../components/cover/cover";
-import Footer from "../../../components/footer/Footer";
-import Navbar from "../../../components/navbar/Navbar";
 import { SEO } from "../../../components/seo/SEO";
 import styles from "./faq.module.css";
+import { AuthContext } from "../../../service/AuthContext";
 
 const FaqPage = () => {
+
+  const {userState} = useContext(AuthContext)
   return (
     <>
       <SEO
@@ -13,12 +15,11 @@ const FaqPage = () => {
         name="Consorcio de Agua Santa Maria De Oro"
         type="FAQ"
       />
-      <Navbar />
       <Cover
         title="Preguntas "
         highlight="frecuentes"
         description="aca te mostraremos y responderemos a las preguntas mas comunes o que mas nos han realizado"
-        linkTo="/home"
+        linkTo={userState.isLogin ? "/inicio" : "/"}
         linkText="Pagina principal"
         imageUrl="src/assets/img/undraw_data_re_80ws.svg"
         imageAlt="image Cover"
@@ -33,7 +34,6 @@ const FaqPage = () => {
           </div>
         ))}
       </div>
-      <Footer />
     </>
   );
 };

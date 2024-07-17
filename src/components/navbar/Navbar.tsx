@@ -49,7 +49,7 @@ const Navbar = () => {
                 <li>
                   {userState?.role =="ROLE_ADMIN" ? (
                     <NavLink
-                      to={"/users"}
+                      to={"/usuarios"}
                       style={({ isActive }) => (isActive ? { opacity: 1 } : {})}
                     >
                       <MdAdminPanelSettings /> Modo Administrador 
@@ -65,7 +65,7 @@ const Navbar = () => {
                 </li>
                 <li>
                   <NavLink
-                    to={"notifications"}
+                    to={"notificaciones"}
                     style={({ isActive }) => (isActive ? { opacity: 1 } : {})}
                   >
                     <IoNotifications /> Notificaciones 
@@ -115,7 +115,7 @@ const Navbar = () => {
                     <li>
                       {" "}
                       <NavLink
-                        to={"notifications"}
+                        to={"notificaciones"}
                         style={({ isActive }) => (isActive ? { opacity: 1 } : {})}
                       >
                          <IoNotifications /> Notificaciones

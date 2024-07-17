@@ -39,7 +39,6 @@ const Passwordrecovery: React.FC = () => {
     }
     return (
         <>
-            <Wave pos1="absolute" pos2="absolute" pos3="absolute" />
             <div className={styles.login_container}>
                 <div className={styles.card}>
                     <div className={styles.card__details}>

@@ -22,7 +22,7 @@ const Login: React.FC = () => {
   //Datos ingresados por el usuario
   const [user, setUser] = useState("");
   const [pass, setPass] = useState("");
-  const [rememberPass, setRememberPass] = useState(false);
+  const [showPass, setShowPass] = useState(false);
 
   //Modales
   const [showAlert, setShowAlert] = useState(false);
@@ -116,7 +116,7 @@ const Login: React.FC = () => {
 
             <div className={styles.input_box}>
               <input
-                type="password"
+                type={ showPass ? "text" : "password"}
                 placeholder="Contraseña"
                 onChange={(e) => setPass(e.target.value)}
                 disabled={loading}
@@ -128,13 +128,13 @@ const Login: React.FC = () => {
             <div className={styles.remember_forgot}>
               <label>
                 <input
-                  onChange={(e) => setRememberPass(e.target.checked)}
+                  onChange={(e) => setShowPass(e.target.checked)}
                   type="checkbox"
                   disabled={loading}
                 />
-                Recordar
+                Mostrar
               </label>
-              <Link to="/passwordrecovery">¿Olvidaste la contraseña?</Link>
+              <Link to="/recuperar">¿Olvidaste la contraseña?</Link>
             </div>
 
             <button type="submit" className={styles.btn} disabled={loading}>

@@ -15,6 +15,8 @@ import FaqPage from "./pages/public/faq/faq";
 import AccountSummary from "./pages/private/account-summary/account-summary";
 import Consumo from "./pages/private/consumo/consumo";
 import WaveComponent from "./components/wave/Wave";
+import Footer from "./components/footer/Footer";
+import UserManagment from "./pages/private/userManagement/UserManagement";
 
 export const App = () => {
   return (
@@ -32,25 +34,25 @@ const AppContent = () => {
       <WaveComponent />
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/changeCode" element={<ChangeCode />} />
-        <Route path="/passwordrecovery" element={<Passwordrecovery />} />
+        <Route path="/codigo" element={<ChangeCode />} />
+        <Route path="/recuperar" element={<Passwordrecovery />} />
+        <Route path="/info" element={<Info />} />
 
         {/* rutas que estan todavia sin roles */}
         <Route path="/faq" element={<FaqPage />} />
-        <Route path="/account" element={<AccountSummary />} />
-        <Route path="/info" element={<Info />} />
-        <Route path="/consumo" element={<Consumo />} />
         {/* rutas que estan todavia sin roles */}
 
         {/* Se especifica que roles tienen acceso */}
         <Route element={<ProtectedRoutes allowedRoles={["ROLE_USER", "ROLE_ADMIN"]} />}>
           <Route path="/inicio" element={<Home />} />
-          <Route path="/notifications" element={<Info />} />
+          <Route path="/consumo" element={<Consumo />} />
+          <Route path="/resumen" element={<AccountSummary />} />
+
         </Route>
 
         <Route element={<ProtectedRoutes allowedRoles={["ROLE_ADMIN"]} />}>
           {/* {Colocar rutas privadas} */}
-          <Route path="/users" element={<UserManagment />} />
+          <Route path="/usuarios" element={<UserManagment />} />
         </Route>
       </Routes>
        <Footer />

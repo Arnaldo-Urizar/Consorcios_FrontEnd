@@ -16,7 +16,7 @@ function WaveComponent() {
         options={{
           height: 50,
           amplitude: 45,
-          speed: 0.25,
+          speed: 0.15,
           points: 3,
         }}
       />

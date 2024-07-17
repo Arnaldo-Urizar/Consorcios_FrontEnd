@@ -1,5 +1,4 @@
 import Cover from "../../../components/cover/cover";
-import Footer from "../../../components/footer/Footer";
 import Navbar from "../../../components/navbar/Navbar";
 import { SEO } from "../../../components/seo/SEO";
 import styles from "./consumo.module.css";
@@ -111,7 +110,6 @@ const Consumo = () => {
           </BarChart>
         </ResponsiveContainer>
       </div>
-      <Footer />
     </>
   );
 };

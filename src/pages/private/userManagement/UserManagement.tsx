@@ -1,8 +1,7 @@
 import {useContext, useEffect, useState } from 'react';
-import Wave from "../../../components/wave/Wave";
 import Navbar from "../../../components/navbar/Navbar";
 import { Alert } from '../../../components/alert/Alert';
-import './UserTable.css';
+import './userManagement.css';
 import UserData from '../../../models/UserData';
 import UserCreate from '../../../models/UserCreate';
 import UserUpdate from '../../../models/UserUpdate';
@@ -10,7 +9,7 @@ import UserActive from '../../../models/UserActive';
 import { getUsers , updateUser, addUser, stateUser} from '../../../service/requests';
 import { AuthContext } from '../../../service/AuthContext';
 
-function UserTable() {
+function UserManagement() {
 
   const {userState} = useContext(AuthContext)
   const token = userState.token
@@ -132,7 +131,6 @@ function UserTable() {
 
   return (
     <>
-      <Wave pos1="absolute" pos2="absolute" pos3="absolute" />
       <Navbar />
       <section className="user-table-section">
         <div className="user-table-container">
@@ -269,4 +267,4 @@ function UserTable() {
   );
 }
 
-export default UserTable;
+export default UserManagement;

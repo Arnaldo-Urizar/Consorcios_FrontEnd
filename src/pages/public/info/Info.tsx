@@ -1,6 +1,6 @@
-import Navbar from "../../../components/navbar/Navbar";
 import { SEO } from "../../../components/seo/SEO";
 import styles from "./info.module.css";
+import { Link } from "react-router-dom";
 
 function Info() {
   return (
@@ -11,13 +11,12 @@ function Info() {
         name="Consorcio de Agua Santa Maria De Oro"
         type="article"
       />
-      <Navbar />
+      {/* <div className={styles.title}>
+        <h2>
+          Consorcio Vecinal <br /> Santa Maria de Oro
+        </h2>
+      </div>    */}
       <div className={styles.container}>
-        <div className={styles.title}>
-          <h2>
-            Consorcio Vecinal <br /> Santa Maria de Oro
-          </h2>
-        </div>
         <main className={styles.content}>
           <h3>Consorcio Vecinal de Agua Potable Santa Maria de Oro</h3>
           <br />
@@ -77,6 +76,8 @@ function Info() {
             Si tiene alguna pregunta o comentario, no dude en ponerse en
             contacto con nosotros. Estamos aquí para ayudarlo.
           </p>
+          {/* <button className={styles.btn}>Volver</button> */}
+          <Link to={"/"} className={styles.btn}>Regresar</Link>
         </main>
       </div>
     </>
