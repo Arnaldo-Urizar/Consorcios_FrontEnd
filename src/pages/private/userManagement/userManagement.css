@@ -169,11 +169,12 @@
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  padding: 10px;
 }
 
 .modal {
   background: white;
-  padding: 20px;
+  padding: 30px;
   border-radius: 10px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   max-width: 500px;
@@ -181,7 +182,8 @@
 }
 
 .modal h2 {
-  margin-top: 0;
+  padding: 40px 0px;
+  text-align: center;
 }
 
 .modal form {
@@ -201,6 +203,9 @@
   border-radius: 5px;
   border: 1px solid #ccc;
   font-size: 14px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
 .modal button {

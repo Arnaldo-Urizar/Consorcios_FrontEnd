@@ -4,7 +4,7 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    /* height: 100vh; */
+    height: 100vh;
     padding: 100px 0px;
   }
   
@@ -67,3 +67,11 @@
   .menu_item:hover h4 {
     color: #1d1d1d;
   }
+
+
+  @media (max-width: 765px) {
+    .content {
+      height: 100%;
+    }
+  }
+  
