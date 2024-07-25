@@ -74,7 +74,7 @@ const Consumo = () => {
         highlight="Consumo de agua"
         imageUrl="src/assets/img/undraw_data_re_80ws.svg"
         imageAlt="image Cover"
-        linkTo="/home"
+        linkTo="/inicio"
         linkText="Pagina principal"
         description="Te mostramos el consumo de agua que has tenido a lo largo de todo el año."
       />

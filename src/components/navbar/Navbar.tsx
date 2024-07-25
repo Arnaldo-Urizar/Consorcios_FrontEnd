@@ -22,6 +22,10 @@ const Navbar = () => {
     const toggleMenu = () => {
         setMenuOpen(!menuOpen);
     };
+
+    const closedMenu= ()=>{
+      setMenuOpen(false)
+    }
     
     return (
         <div className={styles.navContainer}>
@@ -89,8 +93,9 @@ const Navbar = () => {
                   <ul>
                     <li>
                       <NavLink
-                        to={"/"}
+                        to={"/inicio"}
                         style={({ isActive }) => (isActive ? { opacity: 1 } : {})}
+                        onClick={closedMenu}
                       >
                         <AiFillHome /> Inicio 
                       </NavLink>
@@ -98,8 +103,9 @@ const Navbar = () => {
                     <li>
                       {userState?.role == "ROLE_ADMIN" ? (
                         <NavLink
-                          to={"/homepage"}
+                          to={"/usuarios"}
                           style={({ isActive }) => (isActive ? { opacity: 1 } : {})}
+                          onClick={closedMenu}
                         >
                            <MdAdminPanelSettings /> Modo Administrador
                         </NavLink>
@@ -107,6 +113,7 @@ const Navbar = () => {
                         <NavLink
                           to={"/faq"}
                           style={({ isActive }) => (isActive ? { opacity: 1 } : {})}
+                          onClick={closedMenu}
                         >
                           <FaQuestion /> Preguntas Frecuentes 
                         </NavLink>
@@ -117,6 +124,7 @@ const Navbar = () => {
                       <NavLink
                         to={"notificaciones"}
                         style={({ isActive }) => (isActive ? { opacity: 1 } : {})}
+                        onClick={closedMenu}
                       >
                          <IoNotifications /> Notificaciones
                       </NavLink>

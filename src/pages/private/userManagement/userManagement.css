@@ -38,6 +38,8 @@
 .general_actions{
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 15px;
 }
 
 .searchForm{
@@ -226,4 +228,21 @@
 
 .modal button[type="submit"]:hover {
   background-color: #45a049;
+}
+
+
+
+
+/* Responsive adjustments */
+@media (max-width: 765px) {
+  .user-table-section {
+    display:contents;    
+  }
+
+  .user-table-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }  
 }
