@@ -182,17 +182,12 @@
 }
 
 .modal h2 {
-  padding: 40px 0px;
   text-align: center;
 }
 
 .modal form {
   display: flex;
   flex-direction: column;
-}
-
-.modal label {
-  margin-bottom: 10px;
 }
 
 .modal input,
