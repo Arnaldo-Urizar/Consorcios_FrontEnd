@@ -25,14 +25,12 @@ const Login: React.FC = () => {
   const [showPass, setShowPass] = useState(false);
 
   //Modales
-  const [showAlert, setShowAlert] = useState(false);
-  const [showAlertServer, setShowAlertServer] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showError, setShowError] = useState({message: "", isActive: false});
 
-  const handleCloseAlert = () => {
-    setShowAlert(false);
-    setShowAlertServer(false);
-  };
+  const handleClosedModal= ()=>{
+    setShowError({message: "", isActive: false})
+  }
 
   //Verificar que el token tenga una estructura válida
   const isValidToken = (resultFetch: JwtDto) => {
@@ -54,17 +52,13 @@ const Login: React.FC = () => {
       password: pass,
     };
     try {
-      // Envia datos al servidor
       const userData = await userFetch(formData);
-
       if (isValidToken(userData)) {
         logIn(userData);
         navigate("/inicio");
-      } else {
-        setShowAlert(true);
-      }
+      } 
     } catch (e) {
-      setShowAlertServer(true);
+      setShowError({message: e.message, isActive: true}) 
     } finally {
       setLoading(false);
     }
@@ -148,24 +142,17 @@ const Login: React.FC = () => {
           </form>
         </div>
       </section>
-      {showAlert && (
+    {
+      showError.isActive &&(
         <Alert
-          title="Revisa tus datos"
-          description="Tu correo o contraseña ingesados son incorrectos."
-          btn="Aceptar"
-          show={showAlert}
-          onClose={handleCloseAlert}
-        ></Alert>
-      )}
-      {showAlertServer && (
-        <Alert
-          title="Ups!"
-          description="No se pudo inciar sesión. Intentalo más tarde"
-          btn="Aceptar"
-          show={showAlertServer}
-          onClose={handleCloseAlert}
-        ></Alert>
-      )}
+        title="No se pudo iniciar sesión"
+        description={showError.message }
+        btn="Aceptar"
+        show={showError.isActive}
+        onClose={handleClosedModal}
+        ></Alert>          
+      )      
+    }  
     </>
   );
 };

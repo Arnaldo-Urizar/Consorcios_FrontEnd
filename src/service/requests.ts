@@ -17,10 +17,17 @@ export const userFetch = async(userFront: UserFront)=>{
         if(response.ok){
             return await response.json()
         }else{
-            throw new Error(`No se pudo iniciar sesión: ${response.status}`);
+            throw new Error(`Los datos ingresados son incorrectos. Intentalo de nuevo.`);
         }
     }catch(e){
-        throw new Error(`Error desconocido: ${e}`);
+        if (e instanceof Error) {
+            if (e.message === "Failed to fetch") {
+                throw new Error("No se pudo conectar al servidor. Vuelve a intentarlo más tarde.");
+            } else {            
+            throw new Error(e.message);
+            }
+        }
+        throw new Error('Error desconocido');         
     }
 }
 //ChangeCode
