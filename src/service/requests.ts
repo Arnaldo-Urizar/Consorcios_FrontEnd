@@ -10,7 +10,7 @@ export const userFetch = async(userFront: UserFront)=>{
     try{
         //Configuración de la solicitud
         const response = await fetch("http://localhost:8080/auth/login",{ 
-              method: "POST",
+            method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(userFront)
         })
@@ -100,7 +100,7 @@ export async function getUsers(token :string):Promise<UserData[]>{
 export async function updateUser(token: string, id_user: number, body: UserUpdate){
     try{
         const response = await fetch(`http://localhost:8080/users/update?id=${id_user}`,{  
-            method: "POST",
+            method: "PUT",
             headers: {
               "Content-Type": "application/json",
               'Authorization': `Bearer ${token}`,
@@ -146,7 +146,7 @@ export async function addUser(token: string, body: UserCreate){
 export async function stateUser(token: string, id_user: number, body: string){
     try{
         const response = await fetch(`http://localhost:8080/users/toggle-activation?id=${id_user}&status=${body}`,{  
-            method: "POST",
+            method: "PUT",
             headers: {
               "Content-Type": "application/json",
               'Authorization': `Bearer ${token}`,
