@@ -1,5 +1,4 @@
 import Cover from "../../../components/cover/cover";
-import Navbar from "../../../components/navbar/Navbar";
 import { SEO } from "../../../components/seo/SEO";
 import styles from "./consumo.module.css";
 import {
@@ -64,19 +63,18 @@ const Consumo = () => {
     <>
       <SEO
         title="Consumo | Consorcio de Agua Santa Maria de Oro"
-        description="la pagina de Consumo del consorcio de agua Santa Maria de Oro"
+        description="la página de Consumo del consorcio de agua Santa Maria de Oro"
         name="Consorcio de Agua Santa Maria De Oro"
         type="article"
       />
-      <Navbar />
       <Cover
-        title="Grafica del"
+        title="Gráfica de"
         highlight="Consumo de agua"
         imageUrl="src/assets/img/undraw_data_re_80ws.svg"
         imageAlt="image Cover"
         linkTo="/inicio"
-        linkText="Pagina principal"
-        description="Te mostramos el consumo de agua que has tenido a lo largo de todo el año."
+        linkText="Página principal"
+        description="Analiza tu consumo de agua mensual y anual para un mejor control de tus gastos."
       />
 
       <div className={styles.container}>

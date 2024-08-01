@@ -4,6 +4,9 @@ import { SEO } from "../../../components/seo/SEO";
 import styles from "./faq.module.css";
 import { AuthContext } from "../../../service/AuthContext";
 
+import { data } from "../../private/account-summary/faq-data-provisory";
+
+
 const FaqPage = () => {
 
   const {userState} = useContext(AuthContext)
@@ -24,7 +27,7 @@ const FaqPage = () => {
         imageUrl="src/assets/img/undraw_data_re_80ws.svg"
         imageAlt="image Cover"
       />
-      <div className={styles.accordion_container}>
+      {/* <div className={styles.accordion_container}>
         {Array.from({ length: 10 }).map((_, index) => (
           <div key={index} className={styles.accordion}>
             <details>
@@ -33,7 +36,17 @@ const FaqPage = () => {
             </details>
           </div>
         ))}
-      </div>
+      </div> */}
+      <div className={styles.accordion_container}>
+        {data.map((value, index) => (
+          <div key={index} className={styles.accordion}>
+            <details>
+              <summary>{value.question}</summary>
+              <p>{value.response}</p>
+            </details>
+          </div>
+        ))}
+      </div>      
     </>
   );
 };

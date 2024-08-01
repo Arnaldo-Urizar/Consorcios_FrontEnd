@@ -1,5 +1,6 @@
 import {useContext, useEffect, useState } from 'react';
 import { Alert } from '../../../components/alert/Alert';
+import { Warning } from '../../../components/warning/Warning';
 import './userManagement.css';
 import UserData from '../../../models/UserData';
 import UserCreate from '../../../models/UserCreate';
@@ -21,6 +22,7 @@ function UserManagement() {
   const [currentUser, setCurrentUser] = useState(defaultUserData); 
   const [searchValue, setSearchValue] = useState<string>('');
   // const [searchData, setSearchData] = useState();
+  const [selectedUser, setSelectedUser] = useState<number | null>(null);
 
 
   //Modales
@@ -28,6 +30,15 @@ function UserManagement() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [showMessageOK, setShowMessageOK] = useState({message: "", isActive: false});
   const [showError, setShowError] = useState({message: "", isActive: false});
+  
+  const [showWarning, setShowWarning] = useState(false);
+  const [isConfirm, setIsConfirm] = useState(false);
+
+
+  const handleDisableClick = (userId: number)=>{
+    setSelectedUser(userId);
+    setShowWarning(true);
+  }
 
   useEffect(()=>{
     handleGetUsers();
@@ -50,7 +61,10 @@ function UserManagement() {
   const handleClosedModal= ()=>{
     setShowMessageOK({message: "", isActive: false})
     setShowError({message: "", isActive: false})
+    setShowWarning(false)
+
   }
+
   // Cerrar modal de editar usuario
   const handleCloseEditModal = () => {
     setIsEditModalOpen(false);
@@ -90,6 +104,8 @@ function UserManagement() {
       const userAdded= await addUser(token,createUser)
       setShowMessageOK({message: userAdded.message, isActive: true});
       setIsAddModalOpen(false);
+      // Actualizar el estado de la lista de usuarios
+      setUsers(prevUsers => [...prevUsers, userAdded.newUser]);
     }catch(e){
       setShowError({message: e.message, isActive: true});
     }
@@ -109,27 +125,49 @@ function UserManagement() {
       setShowMessageOK({message: userUdated.message, isActive: true})
       setIsEditModalOpen(false);
       setCurrentUser(defaultUserData); 
+      // Actualizar el estado de la lista de usuarios localmente
+      setUsers(prevUsers =>
+        prevUsers.map(user =>
+          user.id_user === currentUser.id_user ? { ...user, ...updatedUser } : user
+        )
+      );
+
     }catch(e){
       setShowError({message: e.message, isActive: true}) 
     }    
   };
   // Hbilitar/Inhabilitar usuario
-  const handleDisable = async (userId: number) => {
+  const handleAcceptStatus = async () => {
     //identifica el usuario, guarda el nuevo estado en newStatus
-    const newStatus = users.filter(user => user.id_user === userId)
-    .map(user => user.status == "ACTIVE" ? "INACTIVE" : "ACTIVE") [0];
+    if(selectedUser !== null){
+      const newStatus = users.filter(user => user.id_user === selectedUser)
+      .map(user => user.status == "ACTIVE" ? "INACTIVE" : "ACTIVE") [0];
 
-    const formData : UserActive = {
-      id_user: userId,
-      status: newStatus
+      const formData : UserActive = {
+        id_user: selectedUser,
+        status: newStatus
+      }
+      try{
+        const stateUpdated = await stateUser(token,formData.id_user,formData.status)
+        setShowMessageOK({message: stateUpdated.message, isActive: true})
+        setIsConfirm(false)
+
+      // Actualizar el estado de la lista de usuarios
+      setUsers(prevUsers =>
+        prevUsers.map(user =>
+          user.id_user === selectedUser ? { ...user, status: newStatus } : user
+        )
+      );
+
+      }catch(e){
+        setShowError({message: e.message, isActive: true}) 
+      }
+      finally{
+        setIsConfirm(false);
+      }
     }
-    try{
-      const stateUpdated = await stateUser(token,formData.id_user,formData.status)
-      setShowMessageOK({message: stateUpdated.message, isActive: true})
-    }catch(e){
-      setShowError({message: e.message, isActive: true}) 
-    }
-  };
+    setShowWarning(false);
+  }
 
   const handleSearch = async(event: React.FormEvent<HTMLFormElement>)=>{
     event.preventDefault();
@@ -187,7 +225,7 @@ function UserManagement() {
                       <button className="edit-button" onClick={() => handleEdit(user.id_user)}>Editar</button>
                       <button
                         className={`disable-button ${user.status === "INACTIVE" ? 'enable-button' : ''}`}
-                        onClick={() => handleDisable(user.id_user)}
+                        onClick={() => handleDisableClick(user.id_user)}
                       >
                       {user.status === "ACTIVE" ? 'Inhabilitar' : 'Habilitar'}
                       </button>
@@ -287,7 +325,17 @@ function UserManagement() {
           show={showMessageOK.isActive}
           onClose={handleClosedModal}
           ></Alert>          
-      )}        
+      )}
+      {showWarning && (
+        <Warning
+          description="¿Estas seguro de modificar el estado?"
+          accept="Aceptar"
+          cancel="Cancelar"
+          show={showWarning}
+          onClose={handleClosedModal}
+          onOpen={handleAcceptStatus}
+        ></Warning>
+      )}       
     </>
   );
 }

@@ -1,9 +1,6 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import Cover from "../../../components/cover/cover";
-import Navbar from "../../../components/navbar/Navbar";
-
 import styles from "./account-summary.module.css";
-import Footer from "../../../components/footer/Footer";
 import { SEO } from "../../../components/seo/SEO";
 import {
   BarChart,
@@ -13,8 +10,13 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../../service/AuthContext";
 
 const AccountSummary = () => {
+
+  const {userState} = useContext(AuthContext);
+  const {name} = userState;
+
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       for (const card of document.getElementsByClassName(styles.card)) {
@@ -94,12 +96,10 @@ const AccountSummary = () => {
       />
       {/* <Wave pos1="absolute" pos2="absolute" pos3="absolute" /> */}
 
-      <Navbar />
-
       <Cover
         title="Resumen de"
         highlight="cuenta"
-        description="Te mostraremos el resumen de tu cuenta y te brindaremos datos y informacion para pagar tus deudas o tus facturas."
+        description="Aquí podrás ver el resumen de tu cuenta y obtener información para pagar tus deudas y facturas."
         linkTo="/faq"
         linkText="Preguntas Frecuentes"
         imageUrl="src/assets/img/undraw_data_re_80ws.svg"
@@ -113,11 +113,11 @@ const AccountSummary = () => {
         </div>
         <div className={styles.card}>
           <div>
-            <p>Nombre: [nombre/apellido]</p>
+            <p>Nombre: {name.firstName} {name.lastName}</p>
             <p>Dirección: [Direccion]</p>
             <p>Número de Cuenta: 123456789</p>
           </div>
-          <h4>Informacion del cliente</h4>
+          <h4>Información del cliente</h4>
         </div>
         <Link to={"/consumo"} className={`${styles.card} ${styles.consumo}`}>
           <div>
@@ -163,7 +163,7 @@ const AccountSummary = () => {
             <p>- Cargos Fijos: $10.00</p>
             <p>- Otros Cargos: $5.00</p>
           </div>
-          <h4>DETALLES DE FACTURACIÓN</h4>
+          <h4>DETALLES FACTURACIÓN</h4>
         </div>
         <div className={styles.card}>
           <div>
@@ -182,7 +182,6 @@ const AccountSummary = () => {
           <h4>TOTAL A PAGAR</h4>
         </div>
       </div>
-      <Footer />
     </>
   );
 };

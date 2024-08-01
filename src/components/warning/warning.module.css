@@ -25,16 +25,11 @@
     border-radius: 8px;
 }
 
-
-
-.modal h3{
+.modal span{
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
     background-color: #008bf8;
-    color: #fff;
-    padding: 12px 0px;
-    text-align: center;
-    font-weight: 600;
+    padding: 15px 0px;
 }
 .modal p{
     /* border: solid 1px green; */
@@ -48,24 +43,32 @@
     display: flex;
     justify-content: center;
     padding: 0px 30px;
+    gap: 5px;
 }
 .btn button{
     height: 100%;
     padding: 10px 20px;
     margin-bottom: 20px;
-    background: #f8bb02;
     border-radius: 8px;
     border: none;
     outline: none;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); */
     cursor: pointer;
-    font-size: 16px;
-    color: #333;
+    font-size: 14px;
+    color: #ffffff;
     font-weight: 600;
-
 }
+
 .btn button:hover {
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 5px rgba(54, 54, 54, 0.5);
+}
+
+.btn_accept{
+    background: #28a745;
+}
+.btn_cancel{
+    background: #dc3545;
+
 }
 
 /*Animaciones*/

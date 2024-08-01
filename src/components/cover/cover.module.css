@@ -73,14 +73,18 @@ main {
 }
 
 @media screen and (max-width: 920px) {
-
+    .cover {
+        padding-top: 2rem;
+    }
     .imagen img {
         width: 400px;
     }
 }
 
 @media screen and (max-width: 760px) {
-
+    .cover {
+        padding-top: 2rem;
+    }
     .imagen img {
         animation: none;
         display: none;
