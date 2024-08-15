@@ -21,7 +21,7 @@ const FaqPage = () => {
       <Cover
         title="Preguntas "
         highlight="frecuentes"
-        description="aca te mostraremos y responderemos a las preguntas mas comunes o que mas nos han realizado"
+        description="Hemos reunido las preguntas más frecuentes para ofrecerte respuestas rápidas y claras."
         linkTo={userState.isLogin ? "/inicio" : "/"}
         linkText="Pagina principal"
         imageUrl="src/assets/img/undraw_data_re_80ws.svg"

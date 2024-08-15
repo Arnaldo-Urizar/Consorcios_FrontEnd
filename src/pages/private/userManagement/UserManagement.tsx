@@ -105,7 +105,8 @@ function UserManagement() {
       setShowMessageOK({message: userAdded.message, isActive: true});
       setIsAddModalOpen(false);
       // Actualizar el estado de la lista de usuarios
-      setUsers(prevUsers => [...prevUsers, userAdded.newUser]);
+      await handleGetUsers();
+
     }catch(e){
       setShowError({message: e.message, isActive: true});
     }

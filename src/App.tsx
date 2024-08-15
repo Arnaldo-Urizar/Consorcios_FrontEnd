@@ -34,7 +34,7 @@ const AppContent = () => {
       <WaveComponent />
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/codigo" element={<ChangeCode />} />
+        <Route path="/changeCode" element={<ChangeCode />} />
         <Route path="/recuperar" element={<Passwordrecovery />} />
         <Route path="/info" element={<Info />} />
 
