@@ -1,4 +1,4 @@
-import {useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Alert } from '../../../components/alert/Alert';
 import { Warning } from '../../../components/warning/Warning';
 import './userManagement.css';
@@ -6,12 +6,12 @@ import UserData from '../../../models/UserData';
 import UserCreate from '../../../models/UserCreate';
 import UserUpdate from '../../../models/UserUpdate';
 import UserActive from '../../../models/UserActive';
-import { getUsers , updateUser, addUser, stateUser, searchUsers} from '../../../service/requests';
+import { getUsers, updateUser, addUser, stateUser, searchUsers } from '../../../service/requests';
 import { AuthContext } from '../../../service/AuthContext';
 
 function UserManagement() {
 
-  const {userState} = useContext(AuthContext)
+  const { userState } = useContext(AuthContext)
   const token = userState.token
 
   const defaultUserData: UserData = {
@@ -19,7 +19,7 @@ function UserManagement() {
   }
 
   const [users, setUsers] = useState<UserData[]>([]);
-  const [currentUser, setCurrentUser] = useState(defaultUserData); 
+  const [currentUser, setCurrentUser] = useState(defaultUserData);
   const [searchValue, setSearchValue] = useState<string>('');
   // const [searchData, setSearchData] = useState();
   const [selectedUser, setSelectedUser] = useState<number | null>(null);
@@ -28,27 +28,32 @@ function UserManagement() {
   //Modales
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [showMessageOK, setShowMessageOK] = useState({message: "", isActive: false});
-  const [showError, setShowError] = useState({message: "", isActive: false});
-  
+  const [showMessageOK, setShowMessageOK] = useState({ message: "", isActive: false });
+  const [showError, setShowError] = useState({ message: "", isActive: false });
+
   const [showWarning, setShowWarning] = useState(false);
-  const [isConfirm, setIsConfirm] = useState(false);
+  const [, setIsConfirm] = useState(false);
 
 
-  const handleDisableClick = (userId: number)=>{
+  const handleDisableClick = (userId: number) => {
     setSelectedUser(userId);
     setShowWarning(true);
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     handleGetUsers();
-  },[])
+  }, [])
 
   // Obtiene id de usuario a Editar
-  const handleEdit = (userId : number) => {
-    const user = users.find(user => user.id_user === userId);
-    setCurrentUser(user);
-    setIsEditModalOpen(true);
+  const handleEdit = (userId: number) => {
+    const user = users.find(user => user.id_user === userId)
+    if (user) {
+      setCurrentUser(user);
+      setIsEditModalOpen(true);
+    } else {
+      // Manejar el caso en que no se encuentra el usuario
+      console.error("Usuario no encontrado");
+    }
   };
 
   //Mostrar facturas de usuario
@@ -58,9 +63,9 @@ function UserManagement() {
 
   //------------------Modales-------------------------//
   // Cerrar modal de Error
-  const handleClosedModal= ()=>{
-    setShowMessageOK({message: "", isActive: false})
-    setShowError({message: "", isActive: false})
+  const handleClosedModal = () => {
+    setShowMessageOK({ message: "", isActive: false })
+    setShowError({ message: "", isActive: false })
     setShowWarning(false)
 
   }
@@ -79,19 +84,23 @@ function UserManagement() {
     setIsAddModalOpen(false);
   };
 
- //-------------------CRUD----------------------------// 
+  //-------------------CRUD----------------------------// 
 
   //Obtener usuarios
-  const handleGetUsers = async()=>{
-    try{
+  const handleGetUsers = async () => {
+    try {
       const users = await getUsers(token)
       setUsers(users);
-    }catch(e){
-      setShowError({message: e.message , isActive: true})
+    } catch (e) {
+      if (e instanceof Error) {
+        setShowError({ message: e.message, isActive: true });
+      } else {
+        setShowError({ message: 'Unknown error', isActive: true });
+      }
     }
   }
   // Agregar usuario 
-  const handleSubmitAddUser = async(event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmitAddUser = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
 
@@ -100,20 +109,24 @@ function UserManagement() {
     createUser.dni = Number(createUser.dni);
     createUser.phone = Number(createUser.phone);
 
-    try{
-      const userAdded= await addUser(token,createUser)
-      setShowMessageOK({message: userAdded.message, isActive: true});
+    try {
+      const userAdded = await addUser(token, createUser)
+      setShowMessageOK({ message: userAdded.message, isActive: true });
       setIsAddModalOpen(false);
       // Actualizar el estado de la lista de usuarios
       await handleGetUsers();
 
-    }catch(e){
-      setShowError({message: e.message, isActive: true});
+    } catch (e) {
+      if (e instanceof Error) {
+        setShowError({ message: e.message, isActive: true });
+      } else {
+        setShowError({ message: 'Unknown error', isActive: true });
+      }
     }
 
   };
   // Editar usuario
-  const handleSubmitEditUser = async(event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmitEditUser = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const updatedUser = Object.fromEntries(formData.entries()) as unknown as UserUpdate;
@@ -121,11 +134,11 @@ function UserManagement() {
     updatedUser.dni = Number(updatedUser.dni);
     updatedUser.phone = Number(updatedUser.phone);
 
-    try{
-      const userUdated = await updateUser(token,currentUser.id_user,updatedUser)
-      setShowMessageOK({message: userUdated.message, isActive: true})
+    try {
+      const userUdated = await updateUser(token, currentUser.id_user, updatedUser)
+      setShowMessageOK({ message: userUdated.message, isActive: true })
       setIsEditModalOpen(false);
-      setCurrentUser(defaultUserData); 
+      setCurrentUser(defaultUserData);
       // Actualizar el estado de la lista de usuarios localmente
       setUsers(prevUsers =>
         prevUsers.map(user =>
@@ -133,53 +146,65 @@ function UserManagement() {
         )
       );
 
-    }catch(e){
-      setShowError({message: e.message, isActive: true}) 
-    }    
+    } catch (e) {
+      if (e instanceof Error) {
+        setShowError({ message: e.message, isActive: true });
+      } else {
+        setShowError({ message: 'Unknown error', isActive: true });
+      }
+    }
   };
   // Hbilitar/Inhabilitar usuario
   const handleAcceptStatus = async () => {
     //identifica el usuario, guarda el nuevo estado en newStatus
-    if(selectedUser !== null){
+    if (selectedUser !== null) {
       const newStatus = users.filter(user => user.id_user === selectedUser)
-      .map(user => user.status == "ACTIVE" ? "INACTIVE" : "ACTIVE") [0];
+        .map(user => user.status == "ACTIVE" ? "INACTIVE" : "ACTIVE")[0];
 
-      const formData : UserActive = {
+      const formData: UserActive = {
         id_user: selectedUser,
         status: newStatus
       }
-      try{
-        const stateUpdated = await stateUser(token,formData.id_user,formData.status)
-        setShowMessageOK({message: stateUpdated.message, isActive: true})
+      try {
+        const stateUpdated = await stateUser(token, formData.id_user, formData.status)
+        setShowMessageOK({ message: stateUpdated.message, isActive: true })
         setIsConfirm(false)
 
-      // Actualizar el estado de la lista de usuarios
-      setUsers(prevUsers =>
-        prevUsers.map(user =>
-          user.id_user === selectedUser ? { ...user, status: newStatus } : user
-        )
-      );
+        // Actualizar el estado de la lista de usuarios
+        setUsers(prevUsers =>
+          prevUsers.map(user =>
+            user.id_user === selectedUser ? { ...user, status: newStatus } : user
+          )
+        );
 
-      }catch(e){
-        setShowError({message: e.message, isActive: true}) 
+      } catch (e) {
+        if (e instanceof Error) {
+          setShowError({ message: e.message, isActive: true });
+        } else {
+          setShowError({ message: 'Unknown error', isActive: true });
+        }
       }
-      finally{
+      finally {
         setIsConfirm(false);
       }
     }
     setShowWarning(false);
   }
 
-  const handleSearch = async(event: React.FormEvent<HTMLFormElement>)=>{
+  const handleSearch = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const dataSearch: string | number = isNaN(Number(searchValue)) ? searchValue : Number(searchValue);
     console.log(dataSearch);
 
-    try{
+    try {
       const data = await searchUsers(token, dataSearch);
       setUsers(data);
-    }catch(e){
-      setShowError({message: e.message, isActive: true}) 
+    } catch (e) {
+      if (e instanceof Error) {
+        setShowError({ message: e.message, isActive: true });
+      } else {
+        setShowError({ message: 'Unknown error', isActive: true });
+      }
     }
   }
 
@@ -189,10 +214,10 @@ function UserManagement() {
         <div className="user-table-container">
           <div className='general_actions'>
             <form className="searchForm" onSubmit={handleSearch}>
-              <input 
-                className="inputSearch" 
-                type='text' name="search" 
-                placeholder='Dni o Nombre' 
+              <input
+                className="inputSearch"
+                type='text' name="search"
+                placeholder='Dni o Nombre'
                 onChange={(e) => setSearchValue(e.target.value)}
               ></input> {/* Mejorar buscador "localhost:8080/users/search?dni=212" "localhost:8080/users/search?name=arni" */}
               <button type="submit" className='btn_search'>Buscar</button>
@@ -228,13 +253,13 @@ function UserManagement() {
                         className={`disable-button ${user.status === "INACTIVE" ? 'enable-button' : ''}`}
                         onClick={() => handleDisableClick(user.id_user)}
                       >
-                      {user.status === "ACTIVE" ? 'Inhabilitar' : 'Habilitar'}
+                        {user.status === "ACTIVE" ? 'Inhabilitar' : 'Habilitar'}
                       </button>
                       <button className="invoice-button" onClick={() => handleInvoice(user.id_user)}>Facturas</button>
                     </td>
                   </tr>
                 ))
-              }
+                }
               </tbody>
             </table>
           </div>
@@ -309,23 +334,23 @@ function UserManagement() {
           </div>
         )}
       </section>
-      {showError.isActive &&(
-          <Alert
+      {showError.isActive && (
+        <Alert
           title="No se pudo completar la acción"
-          description={showError.message }
+          description={showError.message}
           btn="Aceptar"
           show={showError.isActive}
           onClose={handleClosedModal}
-          ></Alert>          
+        ></Alert>
       )}
-      {showMessageOK.isActive &&(
-          <Alert
+      {showMessageOK.isActive && (
+        <Alert
           title="Operación exitosa"
-          description={showMessageOK.message }
+          description={showMessageOK.message}
           btn="Aceptar"
           show={showMessageOK.isActive}
           onClose={handleClosedModal}
-          ></Alert>          
+        ></Alert>
       )}
       {showWarning && (
         <Warning
@@ -336,7 +361,7 @@ function UserManagement() {
           onClose={handleClosedModal}
           onOpen={handleAcceptStatus}
         ></Warning>
-      )}       
+      )}
     </>
   );
 }
