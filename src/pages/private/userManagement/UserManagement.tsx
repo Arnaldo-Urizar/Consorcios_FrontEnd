@@ -196,17 +196,29 @@ function UserManagement() {
     const dataSearch: string | number = isNaN(Number(searchValue)) ? searchValue : Number(searchValue);
     console.log(dataSearch);
 
-    try {
-      const data = await searchUsers(token, dataSearch);
-      setUsers(data);
-    } catch (e) {
-      if (e instanceof Error) {
-        setShowError({ message: e.message, isActive: true });
-      } else {
-        setShowError({ message: 'Unknown error', isActive: true });
-      }
+    if (dataSearch == '') {
+      // Restaurar la lista original de usuarios
+      await handleGetUsers();
+    } else {
+      // Filtrar los usuarios locales
+      const filteredUsers = users.filter((user) => {
+        return (
+          user.firstname.includes(dataSearch.toString()) ||
+          user.lastname.includes(dataSearch.toString()) ||
+          user.dni === dataSearch ||
+          user.phone === dataSearch
+        );
+      });
+
+    // Actualizar el estado con los usuarios filtrados
+    setUsers(filteredUsers);
     }
   }
+
+  const handleClearSearch = () => {
+    setSearchValue('');
+    handleGetUsers();
+  };
 
   return (
     <>
@@ -219,8 +231,10 @@ function UserManagement() {
                 type='text' name="search"
                 placeholder='Dni o Nombre'
                 onChange={(e) => setSearchValue(e.target.value)}
+                onKeyUp={(e) => e.key === 'Escape' && handleClearSearch()}
               ></input> {/* Mejorar buscador "localhost:8080/users/search?dni=212" "localhost:8080/users/search?name=arni" */}
               <button type="submit" className='btn_search'>Buscar</button>
+              <button onClick={handleClearSearch}>Limpiar</button>
             </form>
             <button className="add-button" onClick={handleAddUser}>Agregar Usuario</button>
           </div>
