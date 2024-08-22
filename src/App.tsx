@@ -15,6 +15,7 @@ import FaqPage from "./pages/public/faq/faq";
 import AccountSummary from "./pages/private/account-summary/account-summary";
 import Consumo from "./pages/private/consumo/consumo";
 import WaveComponent from "./components/wave/Wave";
+import HomeAdmin from "./pages/private/HomeAdmin/HomeAdmin";
 
 export const App = () => {
   return (
@@ -33,6 +34,7 @@ const AppContent = () => {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/changeCode" element={<ChangeCode />} />
+        <Route path="/homeAdmin" element={<HomeAdmin />} />
         <Route path="/passwordrecovery" element={<Passwordrecovery />} />
 
         {/* rutas que estan todavia sin roles */}
