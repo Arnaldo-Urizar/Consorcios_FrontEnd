@@ -10,6 +10,50 @@ import {
 import { Link } from "react-router-dom";
 
 export default function HomeAdmin() {
+  // los iconos se sacan de la siguieente url "https://react-icons.github.io/react-icons/"
+  // si quieres agregar otro link solamente crea un nuevo objeto con title, icon y link
+  const menu = [
+    {
+      title: "Consumo",
+      icon: <HiChartPie />,
+      link: "/",
+    },
+    {
+      title: "?????",
+      icon: <HiMiniPresentationChartLine />,
+      link: "/",
+    },
+    {
+      title: "?????",
+      icon: <HiMiniChatBubbleLeftEllipsis />,
+      link: "/",
+    },
+    {
+      title: "??????????",
+      icon: <HiMiniChartBar />,
+      link: "/",
+    },
+    {
+      title: "?????",
+      icon: <HiMiniChartBar />,
+      link: "/",
+    },
+    {
+      title: "?????",
+      icon: <HiMiniChartBar />,
+      link: "/",
+    },
+    {
+      title: "?????",
+      icon: <HiMiniChartBar />,
+      link: "/",
+    },
+    {
+      title: "?????",
+      icon: <HiMiniChartBar />,
+      link: "/",
+    },
+  ];
   return (
     <>
       <SEO
@@ -19,42 +63,15 @@ export default function HomeAdmin() {
         type="Index"
       />
       <div className={styles.content}>
-        {/* <h2>
-            Bienvenido {`${user?.firstName}  ${user?.lastName}`}. Estamos aquí para ofrecerte una experiencia de calidad.
-          </h2> */}
         <section className={styles.menu}>
-          <Link to={"/consumo"} className={styles.menu_item}>
-            <div className={styles.icon}>
-              <HiMiniChartBar />
-            </div>
-            <div className={styles.menu_title}>
-              <h4>Consumo</h4>
-            </div>
-          </Link>
-          <Link to={"/facturas"} className={styles.menu_item}>
-            <div className={styles.icon}>
-              <HiMiniPresentationChartLine />
-            </div>
-            <div className={styles.menu_title}>
-              <h4>Facturas</h4>
-            </div>
-          </Link>{" "}
-          <Link to={"/resumen"} className={styles.menu_item}>
-            <div className={styles.icon}>
-              <HiChartPie />
-            </div>
-            <div className={styles.menu_title}>
-              <h4>Resumen</h4>
-            </div>
-          </Link>{" "}
-          <Link to={"/notifications"} className={styles.menu_item}>
-            <div className={styles.icon}>
-              <HiMiniChatBubbleLeftEllipsis />
-            </div>
-            <div className={styles.menu_title}>
-              <h4>Notificaciones</h4>
-            </div>
-          </Link>
+          {menu.map((item) => (
+            <Link key={item.title} to={item.link} className={styles.menu_item}>
+              <div className={styles.icon}>{item.icon}</div>
+              <div className={styles.menu_title}>
+                <h4>{item.title}</h4>
+              </div>
+            </Link>
+          ))}
         </section>
       </div>
     </>
