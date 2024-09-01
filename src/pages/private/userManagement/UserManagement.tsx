@@ -24,7 +24,6 @@ function UserManagement() {
   // const [searchData, setSearchData] = useState();
   const [selectedUser, setSelectedUser] = useState<number | null>(null);
 
-
   //Modales
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -89,14 +88,18 @@ function UserManagement() {
   //Obtener usuarios
   const handleGetUsers = async () => {
     try {
-      const users = await getUsers(token)
-      setUsers(users);
-    } catch (e) {
-      if (e instanceof Error) {
-        setShowError({ message: e.message, isActive: true });
-      } else {
-        setShowError({ message: 'Unknown error', isActive: true });
+      const storedUsers = sessionStorage.getItem('users'); // Lee los usuarios desde Session Storage
+
+      if(!storedUsers){
+        const users = await getUsers(token)
+        setUsers(users);
+        sessionStorage.setItem('users', JSON.stringify(users))
+      }else{
+        setUsers(JSON.parse(storedUsers));
       }
+    } catch (e) {
+      const errorMessage = e instanceof Error ? e.message : 'Unknown error';
+      setShowError({ message: errorMessage, isActive: true });      
     }
   }
   // Agregar usuario 
@@ -113,8 +116,13 @@ function UserManagement() {
       const userAdded = await addUser(token, createUser)
       setShowMessageOK({ message: userAdded.message, isActive: true });
       setIsAddModalOpen(false);
-      // Actualizar el estado de la lista de usuarios
-      await handleGetUsers();
+      // Actualizar lista de usuarios
+      // await handleGetUsers();
+      
+      const updatedUsers = await getUsers(token)
+      setUsers(updatedUsers);
+      // Actualiza session storage
+      sessionStorage.setItem('users', JSON.stringify(updatedUsers));
 
     } catch (e) {
       if (e instanceof Error) {
@@ -140,11 +148,18 @@ function UserManagement() {
       setIsEditModalOpen(false);
       setCurrentUser(defaultUserData);
       // Actualizar el estado de la lista de usuarios localmente
-      setUsers(prevUsers =>
-        prevUsers.map(user =>
-          user.id_user === currentUser.id_user ? { ...user, ...updatedUser } : user
-        )
+      //setUsers(prevUsers =>
+      //   prevUsers.map(user =>
+      //     user.id_user === currentUser.id_user ? { ...user, ...updatedUser } : user
+      //   )
+      // );
+
+      const updatedUsers = users.map(user => 
+        user.id_user === currentUser.id_user ? { ...user, ...updatedUser } : user
       );
+      setUsers(updatedUsers);
+      // Actualiza `Session Storage`
+      sessionStorage.setItem('users', JSON.stringify(updatedUsers));
 
     } catch (e) {
       if (e instanceof Error) {
@@ -171,11 +186,20 @@ function UserManagement() {
         setIsConfirm(false)
 
         // Actualizar el estado de la lista de usuarios
-        setUsers(prevUsers =>
-          prevUsers.map(user =>
-            user.id_user === selectedUser ? { ...user, status: newStatus } : user
-          )
-        );
+        // setUsers(prevUsers =>
+        //   prevUsers.map(user =>
+        //     user.id_user === selectedUser ? { ...user, status: newStatus } : user
+        //   )
+        // );
+
+      // Actualiza la lista de usuarios localmente
+      const updatedUsers = users.map(user =>
+        user.id_user === selectedUser ? { ...user, status: newStatus } : user
+      );
+      setUsers(updatedUsers);
+
+      // Actualiza `Session Storage`
+      sessionStorage.setItem('users', JSON.stringify(updatedUsers));
 
       } catch (e) {
         if (e instanceof Error) {
@@ -196,7 +220,7 @@ function UserManagement() {
     const dataSearch: string | number = isNaN(Number(searchValue)) ? searchValue : Number(searchValue);
     console.log(dataSearch);
 
-    if (dataSearch == '') {
+    if (!dataSearch || dataSearch.toString().trim() === '') { //trim -> elimina espacios en blanco principio y final del texto.
       // Restaurar la lista original de usuarios
       await handleGetUsers();
     } else {
@@ -215,9 +239,9 @@ function UserManagement() {
     }
   }
 
-  const handleClearSearch = () => {
+  const handleClearSearch = async() => {
     setSearchValue('');
-    handleGetUsers();
+    await handleGetUsers();
   };
 
   return (
@@ -232,7 +256,7 @@ function UserManagement() {
                 placeholder='Dni o Nombre'
                 onChange={(e) => setSearchValue(e.target.value)}
                 onKeyUp={(e) => e.key === 'Escape' && handleClearSearch()}
-              ></input> {/* Mejorar buscador "localhost:8080/users/search?dni=212" "localhost:8080/users/search?name=arni" */}
+              ></input>
               <button type="submit" className='btn_search'>Buscar</button>
               <button onClick={handleClearSearch}>Limpiar</button>
             </form>
