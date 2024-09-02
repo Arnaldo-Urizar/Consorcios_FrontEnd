@@ -1,18 +1,20 @@
 import { useContext, useEffect, useState } from 'react';
-import { Alert } from '../../../../components/alert/Alert';
-import { Warning } from '../../../../components/warning/Warning';
-import './userManagement.css';
+import { AuthContext } from '../../../../service/AuthContext';
+//Modelo de datos
 import UserData from '../../../../models/UserData';
 import UserCreate from '../../../../models/UserCreate';
 import UserUpdate from '../../../../models/UserUpdate';
 import UserActive from '../../../../models/UserActive';
+//Fetch
 import { getUsers, updateUser, addUser, stateUser} from '../../../../service/requests';
-import { AuthContext } from '../../../../service/AuthContext';
-
+// Modales y estilos
+import { Alert } from '../../../../components/alert/Alert';
+import { Warning } from '../../../../components/warning/Warning';
 import { MdCleaningServices } from "react-icons/md";
+import './userManagement.css';
+
 
 function UserManagement() {
-
   const { userState } = useContext(AuthContext)
   const token = userState.token
 
@@ -34,11 +36,6 @@ function UserManagement() {
   const [isConfirm, setIsConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
 
-
-  const handleDisableClick = (userId: number) => {
-    setSelectedUser(userId);
-    setShowWarning(true);
-  }
 
   useEffect(() => {
     handleGetUsers();
@@ -62,34 +59,37 @@ function UserManagement() {
   };
 
   //------------------Modales-------------------------//
-  // Cerrar modal de Error
+  //Modal de Error
   const handleClosedModal = () => {
     setShowMessageOK({ message: "", isActive: false })
     setShowError({ message: "", isActive: false })
     setShowWarning(false)
   }
-
-  // Cerrar modal de editar usuario
+  // Modal editar usuario
   const handleCloseEditModal = () => {
     setIsEditModalOpen(false);
     setCurrentUser(defaultUserData);
   };
-  // Abrir modal de agregar usuario
+  // Modal agregar usuario (Abrir)
   const handleAddUser = () => {
     setIsAddModalOpen(true);
   };
-  // Cerrar modal de agregar usuario
+  // Modal de agregar usuario (Cerrar)
   const handleCloseAddModal = () => {
     setIsAddModalOpen(false);
   };
-
-  //-------------------CRUD----------------------------// 
+  // Estado de usuario (Habilitado/Deshabilitado)
+  const handleDisableClick = (userId: number) => {
+    setSelectedUser(userId);
+    setShowWarning(true);
+  }
+  //-------------------CRUD---------------------------// 
 
   //Obtener usuarios
   const handleGetUsers = async () => {
+    // Obtine usuarios desde Session Storage, Si no existen realiza solicitud al servidor
     try {
-      const storedUsers = sessionStorage.getItem('users'); // Lee los usuarios desde Session Storage
-
+      const storedUsers = sessionStorage.getItem('users'); 
       if(!storedUsers){
         const users = await getUsers(token)
         setUsers(users);
@@ -108,7 +108,7 @@ function UserManagement() {
     setLoading(true);
     const formData = new FormData(event.currentTarget);
 
-    //Object.fromEntries: convierte el formData en objeto clave-valor.
+    //Convierte el formData en objeto clave-valor.
     const createUser = Object.fromEntries(formData.entries()) as unknown as UserCreate;
     createUser.dni = Number(createUser.dni);
     createUser.phone = Number(createUser.phone);
@@ -129,8 +129,8 @@ function UserManagement() {
       setShowError({ message: errorMessage, isActive: true });  
     }finally{
       setLoading(false);
+      handleCloseAddModal()
     }
-
   };
   // Editar usuario
   const handleSubmitEditUser = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -153,7 +153,8 @@ function UserManagement() {
         user.id_user === currentUser.id_user ? { ...user, ...updatedUser } : user
       );
       setUsers(updatedUsers);
-      // Actualiza `Session Storage`
+      
+      // Actualiza session Storage
       sessionStorage.setItem('users', JSON.stringify(updatedUsers));
 
     } catch (e) {
@@ -161,12 +162,13 @@ function UserManagement() {
       setShowError({ message: errorMessage, isActive: true });  
     }finally{
       setLoading(false);
+      handleCloseEditModal()
     }
   };
   // Hbilitar/Inhabilitar usuario
   const handleAcceptStatus = async () => {
-    //identifica el usuario, guarda el nuevo estado en newStatus
     setLoading(true);
+    //identifica el usuario, guarda el nuevo estado en newStatus
     if (selectedUser !== null) {
       const newStatus = users.filter(user => user.id_user === selectedUser)
         .map(user => user.status == "ACTIVE" ? "INACTIVE" : "ACTIVE")[0];
@@ -185,7 +187,6 @@ function UserManagement() {
         user.id_user === selectedUser ? { ...user, status: newStatus } : user
       );
       setUsers(updatedUsers);
-
       // Actualiza `Session Storage`
       sessionStorage.setItem('users', JSON.stringify(updatedUsers));
 
@@ -200,11 +201,10 @@ function UserManagement() {
     }
     setShowWarning(false);
   }
-
+  // Busqueda de Usuarios
   const handleSearch = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const dataSearch: string | number = isNaN(Number(searchValue)) ? searchValue : Number(searchValue);
-    console.log(dataSearch);
 
     if (!dataSearch || dataSearch.toString().trim() === '') { //trim -> elimina espacios en blanco principio y final del texto.
       // Restaurar la lista original de usuarios
