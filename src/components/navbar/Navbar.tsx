@@ -53,7 +53,7 @@ const Navbar = () => {
                 <li>
                   {userState?.role =="ROLE_ADMIN" ? (
                     <NavLink
-                      to={"/usuarios"}
+                      to={"/homeadmin"}
                       style={({ isActive }) => (isActive ? { opacity: 1 } : {})}
                     >
                       <MdAdminPanelSettings /> Modo Administrador 

@@ -1,5 +1,5 @@
-import Cover from "../../../components/cover/cover";
-import { SEO } from "../../../components/seo/SEO";
+import Cover from "../../../../components/cover/cover";
+import { SEO } from "../../../../components/seo/SEO";
 import styles from "./consumo.module.css";
 import {
   BarChart,

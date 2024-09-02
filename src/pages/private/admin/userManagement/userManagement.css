@@ -1,5 +1,5 @@
 .user-table-section {
-  min-height: 100vh;
+  min-height: 90vh;
   padding: 20px;
   display: flex;
   justify-content: center;
@@ -32,6 +32,18 @@
 }
 .show-button:hover {
   background-color: #0056b3;
+}
+
+.clean-button{
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+  padding: 10px 15px;
+  font-size: 20px;
+  margin-left: 5px;
 }
 
 

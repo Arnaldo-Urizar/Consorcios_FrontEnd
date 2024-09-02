@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
-import Cover from "../../../components/cover/cover";
+import Cover from "../../../../components/cover/cover";
 import styles from "./account-summary.module.css";
-import { SEO } from "../../../components/seo/SEO";
+import { SEO } from "../../../../components/seo/SEO";
 import {
   BarChart,
   Bar,
@@ -10,7 +10,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { Link } from "react-router-dom";
-import { AuthContext } from "../../../service/AuthContext";
+import { AuthContext } from "../../../../service/AuthContext";
 
 const AccountSummary = () => {
 

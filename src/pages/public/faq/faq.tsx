@@ -4,7 +4,7 @@ import { SEO } from "../../../components/seo/SEO";
 import styles from "./faq.module.css";
 import { AuthContext } from "../../../service/AuthContext";
 
-import { data } from "../../private/account-summary/faq-data-provisory";
+import { data } from "../../private/user/account-summary/faq-data-provisory";
 
 
 const FaqPage = () => {

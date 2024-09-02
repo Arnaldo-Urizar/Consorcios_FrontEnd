@@ -1,13 +1,15 @@
 import { useContext, useEffect, useState } from 'react';
-import { Alert } from '../../../components/alert/Alert';
-import { Warning } from '../../../components/warning/Warning';
+import { Alert } from '../../../../components/alert/Alert';
+import { Warning } from '../../../../components/warning/Warning';
 import './userManagement.css';
-import UserData from '../../../models/UserData';
-import UserCreate from '../../../models/UserCreate';
-import UserUpdate from '../../../models/UserUpdate';
-import UserActive from '../../../models/UserActive';
-import { getUsers, updateUser, addUser, stateUser, searchUsers } from '../../../service/requests';
-import { AuthContext } from '../../../service/AuthContext';
+import UserData from '../../../../models/UserData';
+import UserCreate from '../../../../models/UserCreate';
+import UserUpdate from '../../../../models/UserUpdate';
+import UserActive from '../../../../models/UserActive';
+import { getUsers, updateUser, addUser, stateUser} from '../../../../service/requests';
+import { AuthContext } from '../../../../service/AuthContext';
+
+import { MdCleaningServices } from "react-icons/md";
 
 function UserManagement() {
 
@@ -21,7 +23,6 @@ function UserManagement() {
   const [users, setUsers] = useState<UserData[]>([]);
   const [currentUser, setCurrentUser] = useState(defaultUserData);
   const [searchValue, setSearchValue] = useState<string>('');
-  // const [searchData, setSearchData] = useState();
   const [selectedUser, setSelectedUser] = useState<number | null>(null);
 
   //Modales
@@ -29,9 +30,9 @@ function UserManagement() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [showMessageOK, setShowMessageOK] = useState({ message: "", isActive: false });
   const [showError, setShowError] = useState({ message: "", isActive: false });
-
   const [showWarning, setShowWarning] = useState(false);
-  const [, setIsConfirm] = useState(false);
+  const [isConfirm, setIsConfirm] = useState(false);
+  const [loading, setLoading] = useState(false);
 
 
   const handleDisableClick = (userId: number) => {
@@ -66,7 +67,6 @@ function UserManagement() {
     setShowMessageOK({ message: "", isActive: false })
     setShowError({ message: "", isActive: false })
     setShowWarning(false)
-
   }
 
   // Cerrar modal de editar usuario
@@ -105,6 +105,7 @@ function UserManagement() {
   // Agregar usuario 
   const handleSubmitAddUser = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setLoading(true);
     const formData = new FormData(event.currentTarget);
 
     //Object.fromEntries: convierte el formData en objeto clave-valor.
@@ -116,26 +117,26 @@ function UserManagement() {
       const userAdded = await addUser(token, createUser)
       setShowMessageOK({ message: userAdded.message, isActive: true });
       setIsAddModalOpen(false);
+
       // Actualizar lista de usuarios
-      // await handleGetUsers();
-      
       const updatedUsers = await getUsers(token)
       setUsers(updatedUsers);
       // Actualiza session storage
       sessionStorage.setItem('users', JSON.stringify(updatedUsers));
 
     } catch (e) {
-      if (e instanceof Error) {
-        setShowError({ message: e.message, isActive: true });
-      } else {
-        setShowError({ message: 'Unknown error', isActive: true });
-      }
+      const errorMessage = e instanceof Error ? e.message : 'Unknown error';
+      setShowError({ message: errorMessage, isActive: true });  
+    }finally{
+      setLoading(false);
     }
 
   };
   // Editar usuario
   const handleSubmitEditUser = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setLoading(true);
+
     const formData = new FormData(event.currentTarget);
     const updatedUser = Object.fromEntries(formData.entries()) as unknown as UserUpdate;
 
@@ -147,12 +148,6 @@ function UserManagement() {
       setShowMessageOK({ message: userUdated.message, isActive: true })
       setIsEditModalOpen(false);
       setCurrentUser(defaultUserData);
-      // Actualizar el estado de la lista de usuarios localmente
-      //setUsers(prevUsers =>
-      //   prevUsers.map(user =>
-      //     user.id_user === currentUser.id_user ? { ...user, ...updatedUser } : user
-      //   )
-      // );
 
       const updatedUsers = users.map(user => 
         user.id_user === currentUser.id_user ? { ...user, ...updatedUser } : user
@@ -162,16 +157,16 @@ function UserManagement() {
       sessionStorage.setItem('users', JSON.stringify(updatedUsers));
 
     } catch (e) {
-      if (e instanceof Error) {
-        setShowError({ message: e.message, isActive: true });
-      } else {
-        setShowError({ message: 'Unknown error', isActive: true });
-      }
+      const errorMessage = e instanceof Error ? e.message : 'Unknown error';
+      setShowError({ message: errorMessage, isActive: true });  
+    }finally{
+      setLoading(false);
     }
   };
   // Hbilitar/Inhabilitar usuario
   const handleAcceptStatus = async () => {
     //identifica el usuario, guarda el nuevo estado en newStatus
+    setLoading(true);
     if (selectedUser !== null) {
       const newStatus = users.filter(user => user.id_user === selectedUser)
         .map(user => user.status == "ACTIVE" ? "INACTIVE" : "ACTIVE")[0];
@@ -185,13 +180,6 @@ function UserManagement() {
         setShowMessageOK({ message: stateUpdated.message, isActive: true })
         setIsConfirm(false)
 
-        // Actualizar el estado de la lista de usuarios
-        // setUsers(prevUsers =>
-        //   prevUsers.map(user =>
-        //     user.id_user === selectedUser ? { ...user, status: newStatus } : user
-        //   )
-        // );
-
       // Actualiza la lista de usuarios localmente
       const updatedUsers = users.map(user =>
         user.id_user === selectedUser ? { ...user, status: newStatus } : user
@@ -202,14 +190,12 @@ function UserManagement() {
       sessionStorage.setItem('users', JSON.stringify(updatedUsers));
 
       } catch (e) {
-        if (e instanceof Error) {
-          setShowError({ message: e.message, isActive: true });
-        } else {
-          setShowError({ message: 'Unknown error', isActive: true });
-        }
+        const errorMessage = e instanceof Error ? e.message : 'Unknown error';
+        setShowError({ message: errorMessage, isActive: true });  
       }
       finally {
         setIsConfirm(false);
+        setLoading(false);
       }
     }
     setShowWarning(false);
@@ -233,7 +219,6 @@ function UserManagement() {
           user.phone === dataSearch
         );
       });
-
     // Actualizar el estado con los usuarios filtrados
     setUsers(filteredUsers);
     }
@@ -258,7 +243,7 @@ function UserManagement() {
                 onKeyUp={(e) => e.key === 'Escape' && handleClearSearch()}
               ></input>
               <button type="submit" className='btn_search'>Buscar</button>
-              <button onClick={handleClearSearch}>Limpiar</button>
+              <button className="clean-button" onClick={handleClearSearch}><MdCleaningServices/></button>
             </form>
             <button className="add-button" onClick={handleAddUser}>Agregar Usuario</button>
           </div>
@@ -331,10 +316,10 @@ function UserManagement() {
                 </label>
                 <label>
                   Email:
-                  <input type="text" name="username" required />
+                  <input type="email" name="username" required />
                 </label>
                 <button type="button" onClick={handleCloseAddModal}>Cerrar</button>
-                <button type="submit">Agregar</button>
+                <button type="submit" disabled={loading}>{loading ? "Cargando..." : "Agregar"}</button>
               </form>
             </div>
           </div>
@@ -366,7 +351,7 @@ function UserManagement() {
                   <input type="text" name="username" defaultValue={currentUser.username} required />
                 </label>
                 <button type="button" onClick={handleCloseEditModal}>Cerrar</button>
-                <button type="submit">Guardar</button>
+                <button type="submit" disabled={loading}>{loading ? "Cargando..." : "Guardar"}</button>
               </form>
             </div>
           </div>

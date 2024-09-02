@@ -46,8 +46,8 @@
     height: 80%;
   }
   .menu_item svg {
-    width: 100px;
-    height: 100px;
+    width: 90px;
+    height: 90px;
     color: var(--primary-color);
   }
   .menu_title {
