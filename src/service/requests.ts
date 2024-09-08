@@ -8,8 +8,8 @@ import Email from "../models/Email"
 // Login
 export const userFetch = async(userFront: UserFront)=>{
     try{
-        //Configuración de la solicitud
-        const response = await fetch("http://localhost:8080/auth/login",{ 
+        const response = await fetch("https://530a16d0-bac8-41f6-bdb2-8658632a0ab1.mock.pstmn.io/",{ 
+        // const response = await fetch("http://localhost:8080/auth/login",{ 
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(userFront)
@@ -47,10 +47,8 @@ export async function modifyPassword(body: NewPassword){
         throw new Error("No se pudo modifcar la contraseña");  
         
     }catch(e){
-        if (e instanceof Error) {
-            throw new Error(e.message);
-          }
-          throw new Error('Error desconocido'); 
+        const errorMessage = e instanceof Error ? e.message : 'Error desconocido';
+        throw new Error(errorMessage);
     }     
 }
 //PasswordRecovery
@@ -70,16 +68,15 @@ export async function passRecovery(body: Email ){
         throw new Error("No se pudo modifcar la contraseña");  
         
     }catch(e){
-        if (e instanceof Error) {
-            throw new Error(e.message);
-          }
-          throw new Error('Error desconocido'); 
+        const errorMessage = e instanceof Error ? e.message : 'Error desconocido';
+        throw new Error(errorMessage);
     }     
 }
 // User Management
 export async function getUsers(token :string):Promise<UserData[]>{
     try{
-        const response = await fetch("http://localhost:8080/users",{  
+        const response = await fetch("https://530a16d0-bac8-41f6-bdb2-8658632a0ab1.mock.pstmn.io/users",{  
+        // const response = await fetch("http://localhost:8080/users",{  
             method: "GET",
             headers: {
               'Authorization': `Bearer ${token}`,
@@ -91,15 +88,14 @@ export async function getUsers(token :string):Promise<UserData[]>{
         }
         throw new Error("No se pudo obtener los usuarios");  
     }catch(e){  
-        if (e instanceof Error) {
-            throw new Error(e.message);
-          }
-          throw new Error('Error desconocido'); 
+        const errorMessage = e instanceof Error ? e.message : 'Error desconocido';
+        throw new Error(errorMessage);
     }
 }
 export async function updateUser(token: string, id_user: number, body: UserUpdate){
     try{
-        const response = await fetch(`http://localhost:8080/users/update?id=${id_user}`,{  
+        const response = await fetch(`https://530a16d0-bac8-41f6-bdb2-8658632a0ab1.mock.pstmn.io/updateuser`,{  
+        // const response = await fetch(`http://localhost:8080/users/update?id=${id_user}`,{  
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
@@ -114,15 +110,14 @@ export async function updateUser(token: string, id_user: number, body: UserUpdat
         throw new Error("No se pudo actualizar los datos el usuario");  
         
     }catch(e){
-        if (e instanceof Error) {
-            throw new Error(e.message);
-          }
-          throw new Error('Error desconocido'); 
+        const errorMessage = e instanceof Error ? e.message : 'Error desconocido';
+        throw new Error(errorMessage);
     }     
 }
 export async function addUser(token: string, body: UserCreate){
     try{
-        const response = await fetch(`http://localhost:8080/users/register`,{  
+        const response = await fetch(`https://530a16d0-bac8-41f6-bdb2-8658632a0ab1.mock.pstmn.io/createuser`,{  
+        // const response = await fetch(`http://localhost:8080/users/register`,{  
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -137,15 +132,14 @@ export async function addUser(token: string, body: UserCreate){
         throw new Error("No se pudo agregar el usuario");  
         
     }catch(e){
-        if (e instanceof Error) {
-            throw new Error(e.message);
-          }
-          throw new Error('Error desconocido'); 
+        const errorMessage = e instanceof Error ? e.message : 'Error desconocido';
+        throw new Error(errorMessage);
     }     
 }
 export async function stateUser(token: string, id_user: number, body: string){
     try{
-        const response = await fetch(`http://localhost:8080/users/toggle-activation?id=${id_user}&status=${body}`,{  
+        const response = await fetch(`https://530a16d0-bac8-41f6-bdb2-8658632a0ab1.mock.pstmn.io/modifiedstatus`,{  
+        // const response = await fetch(`http://localhost:8080/users/toggle-activation?id=${id_user}&status=${body}`,{  
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
@@ -160,31 +154,9 @@ export async function stateUser(token: string, id_user: number, body: string){
         throw new Error("No se pudo modificar el estado del usuario");  
         
     }catch(e){
-        if (e instanceof Error) {
-            throw new Error(e.message);
-          }
-          throw new Error('Error desconocido'); 
+        const errorMessage = e instanceof Error ? e.message : 'Error desconocido';
+        throw new Error(errorMessage);
     }     
 }
-export async function searchUsers(token: string, searchData: string | number):Promise<UserData[]>{
-    const url = typeof searchData === "string" ? "name" : "dni";
-    try{
-        const response = await fetch(`http://localhost:8080/users/search?${url}=${searchData}`,{  
-            method: "GET",
-            headers: {
-              'Authorization': `Bearer ${token}`,
-            },
-        });
-        if(response.ok){
-            const data: UserData[] = await response.json();
-            return data;
-        }
-        throw new Error("No se encontraron resultados");  
-    }catch(e){  
-        if (e instanceof Error) {
-            throw new Error(e.message);
-          }
-          throw new Error('Error desconocido'); 
-    }
-}
+
 
