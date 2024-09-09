@@ -19,7 +19,6 @@
   background-color: #4CAF50;
   color: white;
   padding: 12px 24px;
-  margin-bottom: 20px;
   border: none;
   cursor: pointer;
   border-radius: 5px;
@@ -41,9 +40,12 @@
   cursor: pointer;
   border-radius: 5px;
   font-size: 16px;
-  padding: 10px 15px;
+  padding: 8px 15px;
   font-size: 20px;
   margin-left: 5px;
+}
+.clean-button:hover{
+  background-color: #0056b3;
 }
 
 
@@ -52,8 +54,13 @@
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 15px;
+  margin-bottom: 20px;
 }
-
+.search-clean{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
 .searchForm{
   height: 42px;
   display: flex;
@@ -242,6 +249,46 @@
   background-color: #45a049;
 }
 
+/* Contenedor de paginación */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+/* Botones de paginación */
+.pagination button {
+  background-color: #f0f0f0; 
+  border: 1px solid #ddd; 
+  border-radius: 4px; 
+  padding: 8px 16px; 
+  margin: 0 4px; 
+  cursor: pointer;
+  font-size: 14px; 
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+/* Botón activo o seleccionado */
+.pagination button.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+/* Estilo al pasar el cursor por encima */
+.pagination button:hover {
+  background-color: #ddd;
+  border-color: #ccc; 
+}
+
+/* Estilo para el botón deshabilitado */
+.pagination button:disabled {
+  background-color: #e0e0e0; 
+  border-color: #ccc; 
+  cursor: not-allowed; 
+  color: #999; 
+}
 
 
 

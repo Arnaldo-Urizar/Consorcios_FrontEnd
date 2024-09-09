@@ -22,11 +22,12 @@ function UserManagement() {
     id_user: 0, firstname: "", lastname: "", dni: 0, phone: 0, username: "", status: "INACTIVE"
   }
 
+  // Estados de Usuario
   const [users, setUsers] = useState<UserData[]>([]);
   const [currentUser, setCurrentUser] = useState(defaultUserData);
   const [searchValue, setSearchValue] = useState<string>('');
   const [selectedUser, setSelectedUser] = useState<number | null>(null);
-
+  const [allUsers, setAllUsers] = useState<UserData[]>([]); //Almacena usuarios sin filtrar 
   //Modales
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -35,11 +36,18 @@ function UserManagement() {
   const [showWarning, setShowWarning] = useState(false);
   const [isConfirm, setIsConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
-
-
+  //Paginación
+  const [currentPage, setCurrentPage] = useState(1);
+  const [usersPerPage] = useState(8); //Cantidad de usuarios por página
+  
   useEffect(() => {
     handleGetUsers();
   }, [])
+
+  useEffect(() => {
+    handleSearch(); // Realiza la búsqueda cuando cambia el valor del input
+  }, [searchValue]); // Se ejecuta cada vez que cambia el valor de búsqueda
+
 
   // Obtiene id de usuario a Editar
   const handleEdit = (userId: number) => {
@@ -52,7 +60,6 @@ function UserManagement() {
       console.error("Usuario no encontrado");
     }
   };
-
   //Mostrar facturas de usuario
   const handleInvoice = (userId: number) => {
     alert(`Facturas del usuario con ID: ${userId}`);
@@ -93,10 +100,13 @@ function UserManagement() {
       if(!storedUsers){
         const users = await getUsers(token)
         setUsers(users);
+        setAllUsers(users); // Almacena la lista completa de usuarios
         sessionStorage.setItem('users', JSON.stringify(users))
       }else{
         setUsers(JSON.parse(storedUsers));
+        setAllUsers(JSON.parse(storedUsers)); // Almacena la lista completa de usuarios
       }
+      setCurrentPage(1); // Reinicia la página a 1 cuando se cargan los usuarios
     } catch (e) {
       const errorMessage = e instanceof Error ? e.message : 'Unknown error';
       setShowError({ message: errorMessage, isActive: true });      
@@ -202,51 +212,79 @@ function UserManagement() {
     setShowWarning(false);
   }
   // Busqueda de Usuarios
-  const handleSearch = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const dataSearch: string | number = isNaN(Number(searchValue)) ? searchValue : Number(searchValue);
+  const handleSearch = () => {
+    const dataSearch: string | number = isNaN(Number(searchValue))
+      ? searchValue
+      : Number(searchValue);
 
-    if (!dataSearch || dataSearch.toString().trim() === '') { //trim -> elimina espacios en blanco principio y final del texto.
-      // Restaurar la lista original de usuarios
-      await handleGetUsers();
+    if (!dataSearch || dataSearch.toString().trim() === '') {
+      setUsers(allUsers); // Restaurar la lista original de usuarios
     } else {
       // Filtrar los usuarios locales
-      const filteredUsers = users.filter((user) => {
+      const filteredUsers = allUsers.filter((user) => {
+        const userDni = user.dni.toString(); // Convertir DNI a cadena
+        const searchTerm = dataSearch.toString(); // Convertir término de búsqueda a cadena
+
         return (
-          user.firstname.includes(dataSearch.toString()) ||
-          user.lastname.includes(dataSearch.toString()) ||
-          user.dni === dataSearch ||
-          user.phone === dataSearch
+          user.firstname.toLowerCase().includes(dataSearch.toString().toLowerCase()) ||
+          user.lastname.toLowerCase().includes(dataSearch.toString().toLowerCase()) ||
+          userDni.includes(searchTerm) || // Comparar DNI como cadena
+          user.phone.toString().includes(searchTerm) // Comparar teléfono como cadena
         );
       });
-    // Actualizar el estado con los usuarios filtrados
-    setUsers(filteredUsers);
+      setUsers(filteredUsers); // Actualiza el estado con los usuarios filtrados
     }
-  }
+    setCurrentPage(1); // Reinicia la paginación al realizar una búsqueda
+  };
 
-  const handleClearSearch = async() => {
-    setSearchValue('');
-    await handleGetUsers();
+  // Reinicia valores de busqueda
+  const handleClearSearch = () => {
+    setSearchValue(''); // Limpiar el campo de búsqueda
+    setUsers(allUsers); // Restaura la lista original de usuarios
+    setCurrentPage(1); // Reiniciar la paginación
+  };
+
+  // Calcula los usuarios actuales a mostrar según la página
+  const indexOfLastUser = currentPage * usersPerPage;
+  const indexOfFirstUser = indexOfLastUser - usersPerPage;
+  const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
+
+  // Cambia de página
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+  // Navega a la página anterior
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(prevPage => prevPage - 1);
+    }
+  };
+  // Navega a la página siguiente
+  const handleNextPage = () => {
+    if (currentPage < Math.ceil(users.length / usersPerPage)) {
+      setCurrentPage(prevPage => prevPage + 1);
+    }
   };
 
   return (
     <>
       <section className="user-table-section">
-        <div className="user-table-container">
-          <div className='general_actions'>
-            <form className="searchForm" onSubmit={handleSearch}>
-              <input
-                className="inputSearch"
-                type='text' name="search"
-                placeholder='Dni o Nombre'
-                onChange={(e) => setSearchValue(e.target.value)}
-                onKeyUp={(e) => e.key === 'Escape' && handleClearSearch()}
-              ></input>
-              <button type="submit" className='btn_search'>Buscar</button>
+        <div className="user-table-container">          
+          <div className="general_actions">
+            <div className="search-clean">
               <button className="clean-button" onClick={handleClearSearch}><MdCleaningServices/></button>
-            </form>
+              <form className="searchForm" onSubmit={(e) => e.preventDefault()}>
+                <input
+                  className="inputSearch"
+                  type="text"
+                  name="search"
+                  placeholder="Dni o Nombre"
+                  value={searchValue}
+                  onChange={(e) => setSearchValue(e.target.value)}
+                />
+                <button type="button" className="btn_search" onClick={handleSearch}>Buscar</button>
+              </form>
+            </div>
             <button className="add-button" onClick={handleAddUser}>Agregar Usuario</button>
-          </div>
+          </div>          
 
           <div className="table-wrapper">
             <table className="user-table">
@@ -262,7 +300,8 @@ function UserManagement() {
                 </tr>
               </thead>
               <tbody>
-                {users.map(user => (
+                {/* {users.map(user => ( */}
+                {currentUsers.map(user => (
                   <tr key={user.id_user}>
                     <td>{user.firstname}</td>
                     <td>{user.lastname}</td>
@@ -285,7 +324,22 @@ function UserManagement() {
                 }
               </tbody>
             </table>
-          </div>
+
+          {/* Controles de paginación */}
+            <div className="pagination">
+              <button onClick={handlePrevPage} disabled={currentPage === 1}>Anterior</button>
+              {Array.from({ length: Math.ceil(users.length / usersPerPage) }, (_, i) => i + 1).map((number) => (
+                <button
+                  key={number}
+                  onClick={() => paginate(number)}
+                  className={currentPage === number ? 'active' : ''}
+                >
+                  {number}
+                </button>
+              ))}
+              <button onClick={handleNextPage} disabled={currentPage === Math.ceil(users.length / usersPerPage)}>Siguiente</button>
+            </div>
+          </div>          
         </div>
 
         {/* Modal para agregar usuario */}
