@@ -1,0 +1,307 @@
+.user-table-section {
+  min-height: 90vh;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.user-table-container {
+  max-width: 1500px;
+  margin: 0 auto;
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+}
+
+.add-button, .show-button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+.show-button{
+  background-color: #007bff;
+  margin-right: 3px;
+}
+.show-button:hover {
+  background-color: #0056b3;
+}
+
+.clean-button{
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+  padding: 8px 15px;
+  font-size: 20px;
+  margin-left: 5px;
+}
+.clean-button:hover{
+  background-color: #0056b3;
+}
+
+
+.general_actions{
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+.search-clean{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+.searchForm{
+  height: 42px;
+  display: flex;
+}
+.inputSearch{
+  border: solid 1px #ccc;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+  border-right: none;
+  height: 100%;
+  min-width: 40%;
+  padding-left: 15px;
+}
+.inputSearch:focus{
+  outline: none;
+}
+.btn_search{
+  border: solid 1px #ccc;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border-left: none;
+  height: 100%;
+  padding: 0px 10px;
+  cursor: pointer
+}
+
+.btn_search:hover{
+  background-color: #ddd;
+}
+
+
+
+.add-button:hover {
+  background-color: #45a049;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+
+.user-table th,
+.user-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+}
+
+.user-table th {
+  background-color: #f2f2f2;
+  color: #333;
+  font-weight: bold;
+}
+
+.user-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.user-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.edit-button,
+.disable-button,
+.invoice-button {
+  padding: 8px 16px;
+  margin: 4px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.edit-button {
+  background-color: #007bff;
+  color: white;
+}
+
+.edit-button:hover {
+  background-color: #0056b3;
+}
+
+.disable-button {
+  background-color: #dc3545;
+  color: white;
+}
+
+.disable-button:hover {
+  background-color: #c82333;
+}
+
+.enable-button {
+  background-color: #28a745;
+  color: white;
+}
+
+.enable-button:hover {
+  background-color: #218838;
+}
+
+.invoice-button {
+  background-color: #17a2b8;
+  color: white;
+}
+
+.invoice-button:hover {
+  background-color: #138496;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 10px;
+}
+
+.modal {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  max-width: 500px;
+  width: 100%;
+}
+
+.modal h2 {
+  text-align: center;
+}
+
+.modal form {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal input,
+.modal select {
+  padding: 8px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.modal button {
+  padding: 10px 20px;
+  margin: 5px 0;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.modal button[type="button"] {
+  background-color: #dc3545;
+  color: white;
+}
+
+.modal button[type="button"]:hover {
+  background-color: #c82333;
+}
+
+.modal button[type="submit"] {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.modal button[type="submit"]:hover {
+  background-color: #45a049;
+}
+
+/* Contenedor de paginación */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+/* Botones de paginación */
+.pagination button {
+  background-color: #f0f0f0; 
+  border: 1px solid #ddd; 
+  border-radius: 4px; 
+  padding: 8px 16px; 
+  margin: 0 4px; 
+  cursor: pointer;
+  font-size: 14px; 
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+/* Botón activo o seleccionado */
+.pagination button.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+/* Estilo al pasar el cursor por encima */
+.pagination button:hover {
+  background-color: #ddd;
+  border-color: #ccc; 
+}
+
+/* Estilo para el botón deshabilitado */
+.pagination button:disabled {
+  background-color: #e0e0e0; 
+  border-color: #ccc; 
+  cursor: not-allowed; 
+  color: #999; 
+}
+
+
+
+/* Responsive adjustments */
+@media (max-width: 765px) {
+  .user-table-section {
+    display:contents;    
+  }
+
+  .user-table-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }  
+}

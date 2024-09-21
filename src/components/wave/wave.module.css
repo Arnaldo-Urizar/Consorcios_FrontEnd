@@ -1,15 +1,13 @@
 /* .cover {
   z-index: -10;
-  overflow: hidden;
 }
 .bg_color {
   width: 100%;
-  height: 100%;
+  height: 70%;
   background: #2196f3;
   position: absolute;
   top: 0;
   z-index: -10;
-  
 }
 
 .wave {
@@ -65,65 +63,31 @@
   }
 }
 
-@media (max-width: 1366px) {
+@media (min-width: 1366px) {
   .bg_color {
     height: 56%;
   }
 }
 
-@media (max-width: 1280px) {
+@media (max-width: 599px) {
   .bg_color {
-    height: 60%;
+    height: 50%;
   }
 }
 
-@media (max-width: 1024px) {
-  .bg_color {
-    height: 38%;
-  }
-}
-@media (max-width: 1024px) and (min-width: 608px) {
-  .bg_color {
-    height: 43%;
-  }
-}
-
-@media (max-width: 890px) {
-  .bg_color {
-    height: 75%;
-  }
-}
-
-@media (max-width: 853px) {
-  .bg_color {
-    height: 78%;
-  }
-}
-
-@media (max-width: 768px) {
-  .bg_color {
-    height: 72%;
-  }
-}
-@media (max-width: 712px) {
-  .bg_color {
-    height: 78%;
-  }
-}
-
-@media (max-width: 540px) {
+@media (max-width: 400px) {
   .bg_color {
     height: 58%;
   }
 }
 
-@media (max-width: 430px) {
+@media (min-width: 600px) and (max-width: 899px) {
   .bg_color {
-    height: 68%;
+    height: 76.5%;
   }
 }
 
-@media (max-width: 428px) {
+@media (min-width: 900px) and (max-width: 1280px) {
   .bg_color {
     height: 46%;
   }

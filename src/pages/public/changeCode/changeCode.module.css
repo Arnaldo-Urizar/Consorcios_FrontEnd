@@ -4,6 +4,7 @@
     align-items: center;
     height: 90vh;
     gap: 20px;
+    padding: 40px;
 }
 .form{
     height: 100%;

@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "../login/login.module.css";
 import { Alert } from "../../../components/alert/Alert";
+import { passRecovery } from "../../../service/requests";
+import Email from "../../../models/Email";
 
 const Passwordrecovery: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -19,65 +21,46 @@ const Passwordrecovery: React.FC = () => {
     setShowAlertServer(false);
   };
 
-  const formData = {
-    email,
-  };
+    const formData: Email = {
+        email
+    };
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-    setLoading(true);
-
-    try {
-      const response = await fetch("http://localhost:8080/auth/forgot", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        if (
-          data.message ===
-          "Correo electrónico de restablecimiento de contraseña enviado"
-        ) {
-          setShowConfirmation(true);
-        } else {
-          setShowAlert(true);
+    const handleSubmit = async(event: React.FormEvent) => {
+        event.preventDefault();
+        setLoading(true);
+        try{
+            await passRecovery(formData)
+            setShowConfirmation(true)
+        }catch(e){
+            setShowAlertServer(true)
+        } finally {
+            setLoading(false);
         }
-      } else {
-        throw new Error(`Error response fetch: ${response.status}`);
-      }
-    } catch (e) {
-      setShowAlertServer(true);
-      throw new Error(`Fetch failed: ${e}`);
-    } finally {
-      setLoading(false);
     }
-  };
-  return (
-    <>
-      <div className={styles.login_container}>
-        <div className={styles.card}>
-          <div className={styles.card__details}>
-            <h1>
-              Consorcio Vecinal de Agua Potable <br /> "Santa Maria de Oro"
-            </h1>
-            <p>
-              <strong>
-                Por favor, introduce tu correo electrónico registrado en el
-                Consorcio.
-              </strong>{" "}
-              <br /> <br /> Recibirás un correo electrónico con instrucciones
-              para cambiar tu contraseña. <br /> <br />{" "}
-              <strong>¿Recordaste tu contraseña?</strong> <br /> <br /> Si
-              recordaste tu contraseña vuelve al apartado de "Iniciar sesión"
-            </p>
-          </div>
-          <Link to={"/"} className={styles.card__link}>
-            {" "}
-            Volver al Inicio de sesión
-          </Link>
-        </div>
+    return (
+        <>
+            <div className={styles.login_container}>
+                <div className={styles.card}>
+                    <div className={styles.card__details}>
+                        <h1>
+                            Consorcio Vecinal de Agua Potable <br /> "Santa Maria de Oro"
+                        </h1>
+                        <p>
+                            <strong>
+                                Por favor, introduce tu correo electrónico registrado en el Consorcio.
+                            </strong>{" "}
+                            <br /> <br /> Recibirás un correo electrónico con instrucciones para cambiar tu contraseña. <br /> <br />{" "}
+                            <strong>
+                                ¿Recordaste tu contraseña?
+                            </strong>{" "}
+                            <br /> <br /> Si recordaste tu contraseña vuelve al apartado de "Iniciar sesión"
+                        </p>
+                    </div>
+                    <Link to={"/"} className={styles.card__link}>
+                        {" "}
+                        Volver al Inicio de sesión
+                    </Link>
+                </div>
 
         <div className={styles.wrapper}>
           <h1 className={styles.inicio}>Olvidé mi Contraseña</h1>

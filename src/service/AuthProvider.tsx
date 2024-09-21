@@ -12,35 +12,44 @@ const initialState = {
     token: "",
     name: {
       firstName: "",
-       lastName: ""
+      lastName: ""
     },
     role: ""
 };
   
-  //carga estado inicial del usuario autenticado desde localStorage cuando la aplicación se inicia o se recarga
+  //carga estado inicial del usuario autenticado desde sessionStorage cuando la aplicación se inicia o se recarga
   //si no hay un token guardado usa el estado inicial por defecto
-  const init = () => {
-    const token = sessionStorage.getItem('token');
-    return token ? JSON.parse(token) : initialState.token;
-  };
-
-
-//Decodificar carga de token
-  const decodePayload =()=>{
-    const getToken  = JSON.stringify(sessionStorage.getItem('token'));
-    //Payload decodificado es tipo UserBack
-    const decodePayload = jwtDecode<UserBack>(getToken);
-    return decodePayload
+const init = ()=> {
+  const token = sessionStorage.getItem('token');
+  if(token){
+    try{
+      const decodedToken = jwtDecode<UserBack>(token);
+      return {
+        isLogin: true,
+        token,
+        name: {
+          firstName: decodedToken.firstName,
+          lastName: decodedToken.lastName
+        },
+        role: decodedToken.role
+      };      
+    }catch(e){
+      return initialState;
+    }
   }
+  return initialState
+};
+
+// Tipos de acciones
+type Action =
+  | { type: '[User] LoginAccess', payload: string }
+  | { type: '[User] LoginOut' };
 
   // handleUser maneja las acciones relacionadas con el estado del usuario
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleUser = (state = initialState, action: any) => {
-
+const handleUser = (state = initialState, action: Action) => {
     switch (action.type) {
-
       case '[User] LoginAccess':{
-        const decodeResult = decodePayload();
+        const decodeResult =  jwtDecode<UserBack>(action.payload); 
         return {
           //Modifica el estado inicial con los datos de inicio de sesion
           ...state,
@@ -71,8 +80,6 @@ const initialState = {
     }
   };
 
-
-
 const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
     //El reducer se ejecuta cada vez que se llama a dispatch con una acción
@@ -81,17 +88,17 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     //Acciones:
     //Guarda token y despacha accion para actualizar el estado
     const logIn = (resultFetch : JwtDto)=>{ // resultado back (token,login y role)
-        const action = {
+        const action: Action = {
             type: "[User] LoginAccess",
-            payload: resultFetch
+            payload: resultFetch.token
         };
-        sessionStorage.setItem('token', JSON.stringify(resultFetch.token));
+        sessionStorage.setItem('token', resultFetch.token);
         dispatch(action);
     };
 
     //Cierra sesion: elimina token y despacha accion para actualizar el estado
     const logOut = ()=>{
-        const action = {
+        const action : Action = {
             type: "[User] LoginOut",
         };
         sessionStorage.removeItem('token');
@@ -100,13 +107,11 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
     
     useEffect(() => {
-      //Verifica si hay un token en localStorage y, si existe, despacha una acción
-      // para actualizar el estado de autenticación.
-      const user = sessionStorage.getItem('token');
-        if (user) {
-          const userData = JSON.parse(user);
+      // Actualizar el estado de autenticación.
+      const token = sessionStorage.getItem('token');
+        if (token) {
           //revisar si la carga que recibe en handleuser es correcta o hay que especificar el token
-          dispatch({ type: '[User] LoginAccess', payload: userData });
+          dispatch({ type: '[User] LoginAccess', payload: token});
         }
       }, []);
 
