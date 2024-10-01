@@ -19,6 +19,7 @@ import WaveComponent from "./components/wave/Wave";
 import Footer from "./components/footer/Footer";
 import UserManagment from "./pages/private/admin/userManagement/UserManagement";
 import HomeAdmin from "./pages/private/admin/home/HomeAdmin";
+import WaterBillGenerator from "./pages/private/admin/waterBillGenerator/water-bill-generator";
 
 export const App = () => {
   return (
@@ -41,21 +42,26 @@ const AppContent = () => {
         <Route path="/recuperar" element={<Passwordrecovery />} />
         <Route path="/info" element={<Info />} />
         <Route path="/faq" element={<FaqPage />} />
+        <Route path="generarFacturas" element={<WaterBillGenerator />} />
 
         {/* Rutas administrador Usuario y Aministrador*/}
-        <Route element={<ProtectedRoutes allowedRoles={["ROLE_USER", "ROLE_ADMIN"]} />}>
+        <Route
+          element={
+            <ProtectedRoutes allowedRoles={["ROLE_USER", "ROLE_ADMIN"]} />
+          }
+        >
           <Route path="/inicio" element={<Home />} />
           <Route path="/consumo" element={<Consumo />} />
           <Route path="/resumen" element={<AccountSummary />} />
         </Route>
-        
+
         {/* Rutas administrador (privadas) */}
         <Route element={<ProtectedRoutes allowedRoles={["ROLE_ADMIN"]} />}>
           <Route path="/usuarios" element={<UserManagment />} />
           <Route path="/homeAdmin" element={<HomeAdmin />} />
         </Route>
       </Routes>
-       <Footer />
+      <Footer />
     </BrowserRouter>
   );
 };
