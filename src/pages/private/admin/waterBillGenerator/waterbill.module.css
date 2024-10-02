@@ -8,6 +8,15 @@
     justify-content: center;
 }
 
+.container__group {
+    width: 100%;
+    max-width: fit-content;
+    padding: 2rem;
+    background-color: #f0f0f04d;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+}
+
 .form {
     width: 100%;
     max-width: 700px;
@@ -16,7 +25,7 @@
     align-items: center;
     justify-content: center;
     padding: 1rem;
-    background-color: #f0f0f0;
+    background-color: #f0f0f0a9;
     border-radius: 10px;
     gap: 1.5rem;
 }
@@ -70,6 +79,8 @@
     }
 }
 
+
+
 .factura__table {
     width: 100%;
     max-width: 700px;
@@ -88,7 +99,7 @@
     align-items: start;
     justify-content: center;
     padding: 1rem;
-    background-color: #f0f0f0;
+    background-color: #f0f0f0a9;
     border-radius: 10px;
     margin-bottom: 1rem;
 }
@@ -197,6 +208,9 @@ tbody tr:hover {
     & button {
         border-style: none;
         text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
         width: 200px;
         padding: 1.5rem 0.3rem;
         background-color: #4CAF50;
@@ -215,5 +229,11 @@ tbody tr:hover {
         &:active {
             cursor: progress;
         }
+
+        & svg {
+            width: 25px;
+            height: 25px;
+        }
+
     }
 }
