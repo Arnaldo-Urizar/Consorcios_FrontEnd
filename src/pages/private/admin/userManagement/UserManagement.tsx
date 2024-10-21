@@ -30,7 +30,6 @@ function UserManagement() {
   const [showMessageOK, setShowMessageOK] = useState({ message: "", isActive: false });
   const [showError, setShowError] = useState({ message: "", isActive: false });
   const [showWarning, setShowWarning] = useState(false);
-  const [isConfirm, setIsConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
   //Paginación
   const [currentPage, setCurrentPage] = useState(1);
@@ -45,7 +44,6 @@ function UserManagement() {
   }, [searchValue]); // Se ejecuta cada vez que cambia el valor de búsqueda
 
 
-  // Obtiene id de usuario a Editar
   const handleEdit = (userId: number) => {
     const user = users.find(user => user.idUser === userId)
     if (user) {
@@ -90,22 +88,17 @@ function UserManagement() {
 
   //Obtener usuarios
   const handleGetUsers = async () => {
-    // Obtine usuarios desde Session Storage, Si no existen realiza solicitud al servidor
     try {
-      const storedUsers = sessionStorage.getItem('users'); 
-      if(!storedUsers){
-        const getAllUsers = await getUsers(token)
-        setUsers(getAllUsers);
-        setAllUsers(getAllUsers); // Almacena la lista completa de usuarios
-        sessionStorage.setItem('users', JSON.stringify(users))
-      }else{
-        setUsers(JSON.parse(storedUsers));
-        setAllUsers(JSON.parse(storedUsers)); // Almacena la lista completa de usuarios
-      }
-      setCurrentPage(1); // Reinicia la página a 1 cuando se cargan los usuarios
+      setLoading(true)
+      const fetchedUsers = await getUsers(token)
+      setUsers(fetchedUsers);
+      setAllUsers(fetchedUsers); // Almacena la lista completa de usuarios
+      setCurrentPage(1); 
     } catch (e) {
-      const errorMessage = e instanceof Error ? e.message : 'Unknown error';
+      const errorMessage = e instanceof Error ? e.message : 'Error Desconocido';
       setShowError({ message: errorMessage, isActive: true });      
+    }finally{
+      setLoading(false)
     }
   }
   // Agregar usuario 
@@ -114,7 +107,7 @@ function UserManagement() {
     setLoading(true);
     const formData = new FormData(event.currentTarget);
 
-    //Convierte el formData en objeto clave-valor.
+    //Convierte formData en objeto clave-valor.
     const createUser = Object.fromEntries(formData.entries()) as unknown as UserCreate;
     createUser.dni = Number(createUser.dni);
     createUser.phone = Number(createUser.phone);
@@ -124,14 +117,10 @@ function UserManagement() {
       setShowMessageOK({ message: userAdded.message, isActive: true });
       setIsAddModalOpen(false);
 
-      // Actualizar lista de usuarios
       const updatedUsers = await getUsers(token)
       setUsers(updatedUsers);
-      // Actualiza session storage
-      sessionStorage.setItem('users', JSON.stringify(updatedUsers));
-
     } catch (e) {
-      const errorMessage = e instanceof Error ? e.message : 'Unknown error';
+      const errorMessage = e instanceof Error ? e.message : 'Error Desconocido';
       setShowError({ message: errorMessage, isActive: true });  
     }finally{
       setLoading(false);
@@ -158,15 +147,12 @@ function UserManagement() {
       const updatedUsers = users.map(user => 
         user.idUser === currentUser.idUser ? { ...user, ...updatedUser } : user
       );
-      setUsers(updatedUsers);
-      
-      // Actualiza session Storage
-      sessionStorage.setItem('users', JSON.stringify(updatedUsers));
+      setUsers(updatedUsers);    
 
     } catch (e) {
-      const errorMessage = e instanceof Error ? e.message : 'Unknown error';
+      const errorMessage = e instanceof Error ? e.message : 'Error Desconocido';
       setShowError({ message: errorMessage, isActive: true });  
-    }finally{
+    } finally {
       setLoading(false);
       handleCloseEditModal()
     }
@@ -186,22 +172,16 @@ function UserManagement() {
       try {
         const stateUpdated = await stateUser(token, formData.id_user, formData.status)
         setShowMessageOK({ message: stateUpdated.message, isActive: true })
-        setIsConfirm(false)
-
-      // Actualiza la lista de usuarios localmente
-      const updatedUsers = users.map(user =>
-        user.idUser === selectedUser ? { ...user, status: newStatus } : user
-      );
-      setUsers(updatedUsers);
-      // Actualiza `Session Storage`
-      sessionStorage.setItem('users', JSON.stringify(updatedUsers));
+        // Actualiza la lista de usuarios localmente
+        const updatedUsers = users.map(user =>
+          user.idUser === selectedUser ? { ...user, status: newStatus } : user
+        );
+        setUsers(updatedUsers);
 
       } catch (e) {
-        const errorMessage = e instanceof Error ? e.message : 'Unknown error';
+        const errorMessage = e instanceof Error ? e.message : 'Error Desconocido';
         setShowError({ message: errorMessage, isActive: true });  
-      }
-      finally {
-        setIsConfirm(false);
+      } finally {
         setLoading(false);
       }
     }
@@ -218,19 +198,19 @@ function UserManagement() {
     } else {
       // Filtrar los usuarios locales
       const filteredUsers = allUsers.filter((user) => {
-        const userDni = user.dni.toString(); // Convertir DNI a cadena
-        const searchTerm = dataSearch.toString(); // Convertir término de búsqueda a cadena
+        const userDni = user.dni.toString();
+        const searchTerm = dataSearch.toString(); 
 
         return (
           user.firstName.toLowerCase().includes(dataSearch.toString().toLowerCase()) ||
           user.lastName.toLowerCase().includes(dataSearch.toString().toLowerCase()) ||
-          userDni.includes(searchTerm) || // Comparar DNI como cadena
-          user.phone.toString().includes(searchTerm) // Comparar teléfono como cadena
+          userDni.includes(searchTerm) ||
+          user.phone.toString().includes(searchTerm) 
         );
       });
       setUsers(filteredUsers); // Actualiza el estado con los usuarios filtrados
     }
-    setCurrentPage(1); // Reinicia la paginación al realizar una búsqueda
+    setCurrentPage(1);
   };
 
   // Reinicia valores de busqueda
@@ -243,7 +223,6 @@ function UserManagement() {
   // Calcula los usuarios actuales a mostrar según la página
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
-  console.log(users)
   const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
 
   // Cambia de página
