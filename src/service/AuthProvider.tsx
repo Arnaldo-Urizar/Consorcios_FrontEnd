@@ -1,9 +1,7 @@
 import {ReactNode, useEffect, useReducer } from "react";
 import { AuthContext } from "./AuthContext";
-import JwtDto from "../models/JwtDto";
 import {jwtDecode} from "jwt-decode";
-import UserBack from "../models/UserBack";
-
+import { JWT, UserBack } from "../models/generals";
 //---------gestion del estado de autenticación de un usuario------
 
 //Estado inicial de autenticacion de usuario
@@ -87,7 +85,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
     //Acciones:
     //Guarda token y despacha accion para actualizar el estado
-    const logIn = (resultFetch : JwtDto)=>{ // resultado back (token,login y role)
+    const logIn = (resultFetch : JWT)=>{ // resultado back (token,login y role)
         const action: Action = {
             type: "[User] LoginAccess",
             payload: resultFetch.token

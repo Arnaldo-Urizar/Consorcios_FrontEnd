@@ -15,7 +15,7 @@ export const Alert: React.FC<AlertProps> = ({ title, description, btn, show, onC
     return (
         <section className={styleAlert.modal_background}>
             <div className={styleAlert.modal}>
-                <h3>{title}</h3>
+                <h4>{title}</h4>
                 <p>{description}</p>
                 <div className={styleAlert.btn}>
                     <button onClick={onClose}>{btn}</button>

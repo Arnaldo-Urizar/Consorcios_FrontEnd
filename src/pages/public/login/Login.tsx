@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { userFetch } from "../../../service/requests";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../service/AuthContext";
-import JwtDto from "../../../models/JwtDto";
+import { JWT} from "../../../models/generals";
 import { Link } from "react-router-dom";
 import { Alert } from "../../../components/alert/Alert";
 
@@ -33,7 +33,7 @@ const Login: React.FC = () => {
   }
 
   //Verificar que el token tenga una estructura válida
-  const isValidToken = (resultFetch: JwtDto) => {
+  const isValidToken = (resultFetch: JWT) => {
     const tokenParts = resultFetch.token.split(".");
     if (tokenParts.length === 3) {
       return true;

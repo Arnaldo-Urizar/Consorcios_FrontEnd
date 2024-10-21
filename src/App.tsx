@@ -28,6 +28,7 @@ export const App = () => {
     </AuthProvider>
   );
 };
+
 const AppContent = () => {
   const { userState } = useContext(AuthContext);
   return (
@@ -46,9 +47,7 @@ const AppContent = () => {
 
         {/* Rutas administrador Usuario y Aministrador*/}
         <Route
-          element={
-            <ProtectedRoutes allowedRoles={["ROLE_USER", "ROLE_ADMIN"]} />
-          }
+          element={<ProtectedRoutes allowedRoles={["ROLE_USER", "ROLE_ADMIN"]} />}
         >
           <Route path="/inicio" element={<Home />} />
           <Route path="/consumo" element={<Consumo />} />
@@ -59,6 +58,7 @@ const AppContent = () => {
         <Route element={<ProtectedRoutes allowedRoles={["ROLE_ADMIN"]} />}>
           <Route path="/usuarios" element={<UserManagment />} />
           <Route path="/homeAdmin" element={<HomeAdmin />} />
+          <Route path="/facturas" element={<WaterBillGenerator />} />
         </Route>
       </Routes>
       <Footer />

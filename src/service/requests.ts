@@ -1,101 +1,110 @@
-import UserFront from "../models/UserFront"
-import UserData from "../models/UserData"
-import UserUpdate from "../models/UserUpdate"
-import UserCreate from "../models/UserCreate"
-import NewPassword from "../models/NewPassword"
-import Email from "../models/Email"
+import { UserFront,UserData,UserUpdate,UserCreate,NewPassword,Email,JWT } from "../models/generals"
+import WebApiResponse from "../models/WebApiResponse"
+import { handleHttpError, isNetworkError } from "../helpers/handleHttpError"
 
-// Login
-export const userFetch = async(userFront: UserFront)=>{
+//Login
+export const userFetch = async(userFront: UserFront): Promise<JWT>=>{
     try{
-        const response = await fetch("https://530a16d0-bac8-41f6-bdb2-8658632a0ab1.mock.pstmn.io/",{ 
-        // const response = await fetch("http://localhost:8080/auth/login",{ 
+        const response = await fetch("http://localhost:8080/api/v1/auth/login",{ 
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(userFront)
         })
-        if(response.ok){
-            return await response.json()
-        }else{
-            throw new Error(`Los datos ingresados son incorrectos. Intentalo de nuevo.`);
-        }
+        const result: WebApiResponse<JWT> = await response.json();
+
+        if (!result.success || !response.ok) {
+            handleHttpError(result.statusCode, result.error)
+            return result.data
+        } 
+        return result.data
     }catch(e){
-        if (e instanceof Error) {
-            if (e.message === "Failed to fetch") {
-                throw new Error("No se pudo conectar al servidor. Vuelve a intentarlo más tarde.");
-            } else {            
-            throw new Error(e.message);
-            }
+        if (isNetworkError(e)) {
+            throw new Error("No se pudo conectar al servidor. Verifica tu conexión a Internet o intenta más tarde.");
         }
-        throw new Error('Error desconocido');         
+        throw (e instanceof Error) ? e : new Error("Error desconocido.");
     }
 }
 //ChangeCode
-export async function modifyPassword(body: NewPassword){
+export async function modifyPassword(body: NewPassword): Promise<WebApiResponse<null>>{
     try{
-        const response = await fetch("http://localhost:8080/auth/reset",{  
+        const response = await fetch("http://localhost:8080/api/v1/auth/reset",{  
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
             body: JSON.stringify(body)
         });
-        if(response.ok){
-            const data = await response.json();
-            return data;
+        const result: WebApiResponse<null> = await response.json();
+
+        if (!result.success && !response.ok) {
+            handleHttpError(result.statusCode, result.error)
+            return result; 
         }
-        throw new Error("No se pudo modifcar la contraseña");  
+        return result;   
         
     }catch(e){
-        const errorMessage = e instanceof Error ? e.message : 'Error desconocido';
-        throw new Error(errorMessage);
+        if (isNetworkError(e)) {
+            throw new Error("No se pudo conectar al servidor. Verifica tu conexión a Internet o intenta más tarde.");
+        }
+        throw (e instanceof Error) ? e : new Error("Error desconocido.");
     }     
 }
+
 //PasswordRecovery
-export async function passRecovery(body: Email ){
+export async function passRecovery(body: Email ):Promise<WebApiResponse<null>>{
     try{
-        const response = await fetch("http://localhost:8080/auth/forgot",{  
+        const response = await fetch("http://localhost:8080/api/v1/auth/forgot",{  
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
             body: JSON.stringify(body)
         });
-        if(response.ok){
-            const data = await response.json();
-            return data;
-        }
-        throw new Error("No se pudo modifcar la contraseña");  
+        const result: WebApiResponse<null> = await response.json();
+
+        if (!result.success && !response.ok) {
+            handleHttpError(result.statusCode, result.error)
+            return result; 
+        }  
+        return result; 
         
     }catch(e){
-        const errorMessage = e instanceof Error ? e.message : 'Error desconocido';
-        throw new Error(errorMessage);
+        if (isNetworkError(e)) {
+            throw new Error("No se pudo conectar al servidor. Verifica tu conexión a Internet o intenta más tarde.");
+        }
+        throw (e instanceof Error) ? e : new Error("Error desconocido.");
     }     
 }
+
 // User Management
 export async function getUsers(token :string):Promise<UserData[]>{
     try{
-        const response = await fetch("https://530a16d0-bac8-41f6-bdb2-8658632a0ab1.mock.pstmn.io/users",{  
-        // const response = await fetch("http://localhost:8080/users",{  
+        const response = await fetch("http://localhost:8080/api/v1/operator",{  
             method: "GET",
             headers: {
               'Authorization': `Bearer ${token}`,
             },
         });
-        if(response.ok){
-            const data: UserData[] = await response.json();
-            return data;
+
+        const result: WebApiResponse<UserData[]> = await response.json()
+
+        if(!result.success && !response.ok){
+            handleHttpError(result.statusCode, result.error)
+            return result.data;
         }
-        throw new Error("No se pudo obtener los usuarios");  
+        return result.data;
     }catch(e){  
-        const errorMessage = e instanceof Error ? e.message : 'Error desconocido';
-        throw new Error(errorMessage);
+        if (isNetworkError(e)) {
+            throw new Error("No se pudo conectar al servidor. Verifica tu conexión a Internet o intenta más tarde.");
+        }
+        throw (e instanceof Error) ? e : new Error("Error desconocido.");
     }
 }
-export async function updateUser(token: string, id_user: number, body: UserUpdate){
+
+//Update user
+export async function updateUser(token: string, id_user: number, body: UserUpdate):Promise<WebApiResponse<null>>{
     try{
-        const response = await fetch(`https://530a16d0-bac8-41f6-bdb2-8658632a0ab1.mock.pstmn.io/updateuser`,{  
-        // const response = await fetch(`http://localhost:8080/users/update?id=${id_user}`,{  
+        const response = await fetch(`http://localhost:8080/api/v1/operator/update?idUser=${id_user}`,{  
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
@@ -103,21 +112,25 @@ export async function updateUser(token: string, id_user: number, body: UserUpdat
             },
             body: JSON.stringify(body)
         });
-        if(response.ok){
-            const data = await response.json();
-            return data;
+        const result: WebApiResponse<null> = await response.json();
+
+        if (!response.ok || !result.success) {
+            handleHttpError(result.statusCode, result.message);
+            return result; 
         }
-        throw new Error("No se pudo actualizar los datos el usuario");  
-        
+        return result;       
     }catch(e){
-        const errorMessage = e instanceof Error ? e.message : 'Error desconocido';
-        throw new Error(errorMessage);
+        if (isNetworkError(e)) {
+            throw new Error("No se pudo conectar al servidor. Verifica tu conexión a Internet o intenta más tarde.");
+        }
+        throw (e instanceof Error) ? e : new Error("Error desconocido.");
     }     
 }
-export async function addUser(token: string, body: UserCreate){
+
+//Add user
+export async function addUser(token: string, body: UserCreate):Promise<WebApiResponse<null>>{
     try{
-        const response = await fetch(`https://530a16d0-bac8-41f6-bdb2-8658632a0ab1.mock.pstmn.io/createuser`,{  
-        // const response = await fetch(`http://localhost:8080/users/register`,{  
+        const response = await fetch(`http://localhost:8080/api/v1/operator/register`,{  
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -125,21 +138,25 @@ export async function addUser(token: string, body: UserCreate){
             },
             body: JSON.stringify(body)
         });
-        if(response.ok){
-            const data = await response.json();
-            return data;
+        const result: WebApiResponse<null> = await response.json()
+
+        if(!result.success || !response.ok){
+            handleHttpError(result.statusCode, result.error)
+            return result; 
         }
-        throw new Error("No se pudo agregar el usuario");  
-        
+        return result;         
     }catch(e){
-        const errorMessage = e instanceof Error ? e.message : 'Error desconocido';
-        throw new Error(errorMessage);
+        if (isNetworkError(e)) {
+            throw new Error("No se pudo conectar al servidor. Verifica tu conexión a Internet o intenta más tarde.");
+        }
+        throw (e instanceof Error) ? e : new Error("Error desconocido.");
     }     
 }
-export async function stateUser(token: string, id_user: number, body: string){
+
+//Status User
+export async function stateUser(token: string, id_user: number, body: string):Promise<WebApiResponse<null>>{
     try{
-        const response = await fetch(`https://530a16d0-bac8-41f6-bdb2-8658632a0ab1.mock.pstmn.io/modifiedstatus`,{  
-        // const response = await fetch(`http://localhost:8080/users/toggle-activation?id=${id_user}&status=${body}`,{  
+        const response = await fetch(`http://localhost:8080/api/v1/operator/toggle-activation?id=${id_user}&status=${body}`,{  
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
@@ -147,15 +164,18 @@ export async function stateUser(token: string, id_user: number, body: string){
             },
             body: JSON.stringify(body)
         });
-        if(response.ok){
-            const data = await response.json();
-            return data;
+        const result: WebApiResponse<null> = await response.json()
+
+        if(!result.success || !response.ok){
+            handleHttpError(result.statusCode, result.error)
+            return result; 
         }
-        throw new Error("No se pudo modificar el estado del usuario");  
-        
+        return result;  
     }catch(e){
-        const errorMessage = e instanceof Error ? e.message : 'Error desconocido';
-        throw new Error(errorMessage);
+        if (isNetworkError(e)) {
+            throw new Error("No se pudo conectar al servidor. Verifica tu conexión a Internet o intenta más tarde.");
+        }
+        throw (e instanceof Error) ? e : new Error("Error desconocido.");
     }     
 }
 

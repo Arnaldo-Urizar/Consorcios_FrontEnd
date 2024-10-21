@@ -2,10 +2,9 @@ import styles from "./changeCode.module.css";
 import styleLogin from "../login/login.module.css";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate} from "react-router-dom";
-import NewPassword from "../../../models/NewPassword";
 import { modifyPassword } from "../../../service/requests";
-
 import { Alert } from "../../../components/alert/Alert";
+import {NewPassword} from "../../../models/generals";
 
 const ChangeCode: React.FC = () => {
   const navigate = useNavigate();

@@ -1,10 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../../../service/AuthContext';
 //Modelo de datos
-import UserData from '../../../../models/UserData';
-import UserCreate from '../../../../models/UserCreate';
-import UserUpdate from '../../../../models/UserUpdate';
-import UserActive from '../../../../models/UserActive';
+import { UserData,UserCreate,UserUpdate,UserActive } from '../../../../models/generals';
 //Fetch
 import { getUsers, updateUser, addUser, stateUser} from '../../../../service/requests';
 // Modales y estilos
@@ -19,9 +16,8 @@ function UserManagement() {
   const token = userState.token
 
   const defaultUserData: UserData = {
-    id_user: 0, firstname: "", lastname: "", dni: 0, phone: 0, username: "", status: "INACTIVE"
+    idUser: 0, firstName: "", lastName: "", dni: 0, phone: 0, username: "", status: "INACTIVE"
   }
-
   // Estados de Usuario
   const [users, setUsers] = useState<UserData[]>([]);
   const [currentUser, setCurrentUser] = useState(defaultUserData);
@@ -51,7 +47,7 @@ function UserManagement() {
 
   // Obtiene id de usuario a Editar
   const handleEdit = (userId: number) => {
-    const user = users.find(user => user.id_user === userId)
+    const user = users.find(user => user.idUser === userId)
     if (user) {
       setCurrentUser(user);
       setIsEditModalOpen(true);
@@ -98,9 +94,9 @@ function UserManagement() {
     try {
       const storedUsers = sessionStorage.getItem('users'); 
       if(!storedUsers){
-        const users = await getUsers(token)
-        setUsers(users);
-        setAllUsers(users); // Almacena la lista completa de usuarios
+        const getAllUsers = await getUsers(token)
+        setUsers(getAllUsers);
+        setAllUsers(getAllUsers); // Almacena la lista completa de usuarios
         sessionStorage.setItem('users', JSON.stringify(users))
       }else{
         setUsers(JSON.parse(storedUsers));
@@ -154,13 +150,13 @@ function UserManagement() {
     updatedUser.phone = Number(updatedUser.phone);
 
     try {
-      const userUdated = await updateUser(token, currentUser.id_user, updatedUser)
+      const userUdated = await updateUser(token, currentUser.idUser, updatedUser)
       setShowMessageOK({ message: userUdated.message, isActive: true })
       setIsEditModalOpen(false);
       setCurrentUser(defaultUserData);
 
       const updatedUsers = users.map(user => 
-        user.id_user === currentUser.id_user ? { ...user, ...updatedUser } : user
+        user.idUser === currentUser.idUser ? { ...user, ...updatedUser } : user
       );
       setUsers(updatedUsers);
       
@@ -180,7 +176,7 @@ function UserManagement() {
     setLoading(true);
     //identifica el usuario, guarda el nuevo estado en newStatus
     if (selectedUser !== null) {
-      const newStatus = users.filter(user => user.id_user === selectedUser)
+      const newStatus = users.filter(user => user.idUser === selectedUser)
         .map(user => user.status == "ACTIVE" ? "INACTIVE" : "ACTIVE")[0];
 
       const formData: UserActive = {
@@ -194,7 +190,7 @@ function UserManagement() {
 
       // Actualiza la lista de usuarios localmente
       const updatedUsers = users.map(user =>
-        user.id_user === selectedUser ? { ...user, status: newStatus } : user
+        user.idUser === selectedUser ? { ...user, status: newStatus } : user
       );
       setUsers(updatedUsers);
       // Actualiza `Session Storage`
@@ -226,8 +222,8 @@ function UserManagement() {
         const searchTerm = dataSearch.toString(); // Convertir término de búsqueda a cadena
 
         return (
-          user.firstname.toLowerCase().includes(dataSearch.toString().toLowerCase()) ||
-          user.lastname.toLowerCase().includes(dataSearch.toString().toLowerCase()) ||
+          user.firstName.toLowerCase().includes(dataSearch.toString().toLowerCase()) ||
+          user.lastName.toLowerCase().includes(dataSearch.toString().toLowerCase()) ||
           userDni.includes(searchTerm) || // Comparar DNI como cadena
           user.phone.toString().includes(searchTerm) // Comparar teléfono como cadena
         );
@@ -247,17 +243,16 @@ function UserManagement() {
   // Calcula los usuarios actuales a mostrar según la página
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
+  console.log(users)
   const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
 
   // Cambia de página
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
-  // Navega a la página anterior
   const handlePrevPage = () => {
     if (currentPage > 1) {
       setCurrentPage(prevPage => prevPage - 1);
     }
   };
-  // Navega a la página siguiente
   const handleNextPage = () => {
     if (currentPage < Math.ceil(users.length / usersPerPage)) {
       setCurrentPage(prevPage => prevPage + 1);
@@ -295,29 +290,29 @@ function UserManagement() {
                   <th>DNI</th>
                   <th>Celular</th>
                   <th>Estado</th>
-                  <th>Email</th>
+                  <th>Usuario</th>
                   <th>Acciones</th>
                 </tr>
               </thead>
               <tbody>
                 {/* {users.map(user => ( */}
                 {currentUsers.map(user => (
-                  <tr key={user.id_user}>
-                    <td>{user.firstname}</td>
-                    <td>{user.lastname}</td>
+                  <tr key={user.idUser}>
+                    <td>{user.firstName}</td>
+                    <td>{user.lastName}</td>
                     <td>{user.dni}</td>
                     <td>{user.phone}</td>
                     <td>{user.status === "ACTIVE" ? "Activo" : "Inactivo"}</td>
                     <td>{user.username}</td> {/* Mostrar el nombre de usuario */}
                     <td>
-                      <button className="edit-button" onClick={() => handleEdit(user.id_user)}>Editar</button>
+                      <button className="edit-button" onClick={() => handleEdit(user.idUser)}>Editar</button>
                       <button
                         className={`disable-button ${user.status === "INACTIVE" ? 'enable-button' : ''}`}
-                        onClick={() => handleDisableClick(user.id_user)}
+                        onClick={() => handleDisableClick(user.idUser)}
                       >
                         {user.status === "ACTIVE" ? 'Inhabilitar' : 'Habilitar'}
                       </button>
-                      <button className="invoice-button" onClick={() => handleInvoice(user.id_user)}>Facturas</button>
+                      <button className="invoice-button" onClick={() => handleInvoice(user.idUser)}>Facturas</button>
                     </td>
                   </tr>
                 ))
@@ -386,11 +381,11 @@ function UserManagement() {
               <form onSubmit={handleSubmitEditUser}>
                 <label>
                   Nombre:
-                  <input type="text" name="firstname" defaultValue={currentUser.firstname} required />
+                  <input type="text" name="firstName" defaultValue={currentUser.firstName} required />
                 </label>
                 <label>
                   Apellido:
-                  <input type="text" name="lastname" defaultValue={currentUser.lastname} required />
+                  <input type="text" name="lastName" defaultValue={currentUser.lastName} required />
                 </label>
                 <label>
                   DNI:
@@ -401,9 +396,13 @@ function UserManagement() {
                   <input type="number" name="phone" defaultValue={currentUser.phone} required />
                 </label>
                 <label>
-                  Email:
+                  Usuario:
                   <input type="text" name="username" defaultValue={currentUser.username} required />
                 </label>
+                {/* <label>
+                  Estado:
+                  <input type="text" name="status" defaultValue={currentUser.status} required />
+                </label>                 */}
                 <button type="button" onClick={handleCloseEditModal}>Cerrar</button>
                 <button type="submit" disabled={loading}>{loading ? "Cargando..." : "Guardar"}</button>
               </form>

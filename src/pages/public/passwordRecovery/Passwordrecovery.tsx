@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import styles from "../login/login.module.css";
 import { Alert } from "../../../components/alert/Alert";
 import { passRecovery } from "../../../service/requests";
-import Email from "../../../models/Email";
+import { Email } from "../../../models/generals";
+
 
 const Passwordrecovery: React.FC = () => {
   const [email, setEmail] = useState("");

@@ -1,6 +1,5 @@
 import { createContext } from 'react';
-import JwtDto from '../models/JwtDto';
-
+import { JWT } from '../models/generals';
 
 interface AuthContextType {
   userState: {
@@ -12,7 +11,7 @@ interface AuthContextType {
     }
     role: string;
   },
-  logIn: (user: JwtDto) => void;
+  logIn: (user: JWT) => void;
   logOut: () => void;
 }
 
