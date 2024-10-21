@@ -20,6 +20,7 @@ import Footer from "./components/footer/Footer";
 import UserManagment from "./pages/private/admin/userManagement/UserManagement";
 import HomeAdmin from "./pages/private/admin/home/HomeAdmin";
 import WaterBillGenerator from "./pages/private/admin/waterBillGenerator/water-bill-generator";
+import { FacturaPDF } from "./pages/private/admin/waterBillGenerator/generate";
 
 export const App = () => {
   return (
@@ -43,6 +44,7 @@ const AppContent = () => {
         <Route path="/info" element={<Info />} />
         <Route path="/faq" element={<FaqPage />} />
         <Route path="generarFacturas" element={<WaterBillGenerator />} />
+        <Route path="factura" element={<FacturaPDF />} />
 
         {/* Rutas administrador Usuario y Aministrador*/}
         <Route

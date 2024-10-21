@@ -2,6 +2,8 @@ import { FaDatabase, FaRegFilePdf } from "react-icons/fa6";
 import { SEO } from "../../../../components/seo/SEO";
 import styles from "./waterbill.module.css";
 import { GoMail } from "react-icons/go";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import { PdfDocument } from "./generate";
 
 function WaterBillGenerator() {
   return (
@@ -115,11 +117,22 @@ function WaterBillGenerator() {
                 Guardar en BD
                 <FaDatabase />
               </button>
-              <button
-              // onClick={generatePDF}
-              >
-                Generar PDF
-                <FaRegFilePdf />
+              <button>
+                <PDFDownloadLink
+                  document={<PdfDocument />}
+                  fileName="factura.pdf"
+                  style={{ textDecoration: "none" }}
+                  key="pdf"
+                  aria-label="Save PDF"
+                  title="Save PDF"
+
+                  // onClick={generatePDF}
+                >
+                  <span className={styles.factura__pdf}>
+                    Generar PDF
+                    <FaRegFilePdf />
+                  </span>
+                </PDFDownloadLink>
               </button>
               <button
               // onClick={sendEmail}
